@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Lịch Sử Đảng - Bài 1</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap');
+
+:root{
+  --bg:#f5f7ff; --card:#fff; --text:#17233f; --muted:#66738f;
+  --primary:#5b4bff; --primary2:#7b6cff; --line:#e3e8f5;
+  --green:#16a34a; --red:#ef4444; --yellow:#f59e0b; --blue:#2563eb;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; font-family:"Be Vietnam Pro",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--text); background:
+  radial-gradient(circle at 10% 10%,rgba(111,94,255,.10),transparent 28%),
+  radial-gradient(circle at 90% 20%,rgba(56,189,248,.10),transparent 30%),
+  var(--bg); min-height:100vh;
+}
+button{font-family:inherit}
+.topbar{
+  height:72px;background:#fff;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;padding:0 34px;
+  position:sticky;top:0;z-index:10;
+}
+.logo{font-size:21px;font-weight:800;color:#182542}
+.top-actions{display:flex;gap:10px;align-items:center}
+.icon-btn,.ghost-btn{
+  border:1px solid var(--line);background:#fff;color:#34415f;
+  border-radius:12px;padding:10px 14px;font-weight:600;cursor:pointer;
+}
+.icon-btn:hover,.ghost-btn:hover{background:#f7f8fd}
+.container{width:min(1180px,calc(100% - 36px));margin:0 auto}
+.home{padding:42px 0 70px}
+.hero{text-align:center;padding:22px 0 34px}
+.badge{display:inline-flex;padding:8px 14px;border-radius:999px;background:#eeecff;color:#5145d9;font-size:13px;font-weight:800;letter-spacing:.5px}
+.hero h1{font-size:clamp(34px,5vw,58px);margin:17px 0 10px;letter-spacing:-1.8px;line-height:1.08}
+.hero p{color:var(--muted);font-size:16px;max-width:760px;margin:0 auto;line-height:1.7}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:24px;
+  box-shadow:0 18px 55px rgba(37,53,94,.08);
+}
+.course-card{padding:30px;margin:0 auto 22px}
+.eyebrow{color:#5648eb;font-size:13px;font-weight:800;letter-spacing:.5px}
+.course-card h2{font-size:28px;margin:12px 0 8px}
+.course-card .count{color:var(--muted);margin-bottom:24px}
+.lesson-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.lesson{
+  border:1px solid var(--line);border-radius:18px;background:#fff;padding:20px;
+  text-align:left;cursor:pointer;transition:.2s;min-height:150px;
+}
+.lesson:hover:not(.disabled){transform:translateY(-2px);border-color:#bdb6ff;box-shadow:0 10px 25px rgba(91,75,255,.10)}
+.lesson.active{border:2px solid var(--primary);background:linear-gradient(180deg,#faf9ff,#fff)}
+.lesson.disabled{opacity:.58;cursor:not-allowed}
+.lesson-number{font-weight:800;color:#5b4bff;font-size:14px}
+.lesson h3{margin:10px 0 7px;font-size:18px}
+.lesson p{margin:0;color:var(--muted);font-size:13px;line-height:1.55}
+.start-row{display:flex;gap:12px;margin-top:24px}
+.setup-overlay{position:fixed;inset:0;background:rgba(20,29,55,.46);display:none;align-items:center;justify-content:center;padding:20px;z-index:100;backdrop-filter:blur(5px)}
+.setup-modal{width:min(720px,100%);background:#fff;border-radius:24px;border:1px solid var(--line);box-shadow:0 30px 90px rgba(20,30,70,.22);padding:30px}
+.setup-head{display:flex;justify-content:space-between;gap:15px;align-items:flex-start;margin-bottom:24px}.setup-head h2{margin:0;font-size:27px}.setup-head p{margin:7px 0 0;color:var(--muted);font-size:14px}.close-btn{border:1px solid var(--line);background:#fff;border-radius:10px;width:38px;height:38px;cursor:pointer;font-size:18px}
+.setting-group{margin:20px 0}.setting-group label.title{display:block;font-size:14px;font-weight:800;margin-bottom:11px}.mode-grid,.time-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.setting-option{border:1px solid var(--line);background:#fafbfe;border-radius:12px;padding:11px 10px;cursor:pointer;font-weight:700;color:#35425f}.setting-option.active{border:2px solid var(--primary);background:#f0eeff;color:#4e43d9}.time-grid{grid-template-columns:repeat(5,1fr)}.time-option{padding:10px 7px;text-align:center}.custom-time{display:flex;gap:8px;margin-top:9px}.custom-time input{width:150px;border:1px solid var(--line);border-radius:11px;padding:10px 12px;font:inherit}.switch-row{display:flex;justify-content:space-between;gap:18px;align-items:center;border:1px solid var(--line);background:#fafbfe;border-radius:14px;padding:14px 16px;margin-top:9px}.switch-row span{font-weight:700;font-size:14px}.switch{width:48px;height:27px;border-radius:99px;background:#cdd3e0;position:relative;cursor:pointer;transition:.2s}.switch:after{content:;position:absolute;width:21px;height:21px;border-radius:50%;background:#fff;top:3px;left:3px;box-shadow:0 2px 5px rgba(0,0,0,.15);transition:.2s}.switch.on{background:#5b4bff}.switch.on:after{left:24px}.setup-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:25px}.quiz-home-btn{border:1px solid var(--line);background:#fff;color:#34415f;border-radius:11px;padding:9px 13px;font-weight:800;cursor:pointer;margin-left:auto}.quiz-home-btn:hover{background:#f7f8fd}
+@media(max-width:650px){.mode-grid{grid-template-columns:1fr 1fr}.time-grid{grid-template-columns:repeat(3,1fr)}.setup-modal{padding:22px}}
+.primary{
+  border:0;background:linear-gradient(135deg,#5848f5,#7163ff);color:#fff;
+  border-radius:13px;padding:13px 22px;font-weight:800;cursor:pointer;
+  box-shadow:0 10px 25px rgba(91,75,255,.25)
+}
+.primary:hover{transform:translateY(-1px)}
+.secondary{
+  border:1px solid var(--line);background:#fff;color:#263452;border-radius:13px;
+  padding:13px 22px;font-weight:800;cursor:pointer
+}
+.features{padding:26px 30px;margin-top:20px}
+.features h3{margin:0 0 18px}
+.feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px 35px}
+.feature{display:flex;gap:10px;color:#52617e;font-size:14px}
+.feature b{color:#20a35a}
+
+.quiz-shell{display:none;min-height:100vh}
+.quizbar{
+  background:#fff;border-bottom:1px solid var(--line);padding:15px 24px;
+  position:sticky;top:0;z-index:9
+}
+.quizbar-inner{width:min(1200px,100%);margin:auto}
+.quiz-info{display:flex;align-items:center;gap:20px;font-size:14px;font-weight:700}
+.quiz-info .score{color:#5145df}.quiz-info .streak{color:#ef8d00}.quiz-info .mode{color:#e33d48}
+.progress{height:8px;background:#e9edf7;border-radius:999px;overflow:hidden;margin-top:12px}
+.progress-fill{height:100%;background:linear-gradient(90deg,#12a6e8,#5b4bff);width:0;transition:.3s}
+.quiz-main{width:min(1040px,calc(100% - 30px));margin:26px auto 80px}
+.question-card{background:#fff;border:1px solid var(--line);border-radius:25px;padding:38px 44px;box-shadow:0 18px 55px rgba(37,53,94,.08)}
+.q-type{display:inline-flex;padding:8px 12px;border-radius:999px;background:#eeecff;color:#5145df;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.4px}
+.question{font-size:clamp(24px,3.2vw,36px);line-height:1.35;letter-spacing:-.5px;font-weight:800;margin:18px 0 26px}
+.helper{color:var(--muted);font-size:14px;margin:-12px 0 18px}
+.options{display:grid;gap:13px}
+.option{
+  width:100%;text-align:left;border:2px solid #e3e8f2;background:#fafbfe;
+  color:#1d2a47;border-radius:16px;padding:17px 20px;font-size:16px;
+  line-height:1.55;font-weight:600;cursor:pointer;transition:.18s;
+}
+.option:hover{border-color:#aaa3ff;background:#f8f7ff;transform:translateY(-1px)}
+.option.selected{border-color:#5b4bff;background:#f0eeff}
+.option.correct{border-color:#22a559;background:#eaf9f0;color:#116c37}
+.option.wrong{border-color:#ef4444;background:#fff0f0;color:#a51f1f}
+.option.locked{cursor:default}
+.letter{
+  display:inline-flex;width:32px;height:32px;border-radius:10px;background:#e9ecf6;
+  align-items:center;justify-content:center;margin-right:10px;font-weight:800;color:#42506e
+}
+.option.correct .letter{background:#c9efd7;color:#116c37}
+.option.wrong .letter{background:#ffd0d0;color:#a51f1f}
+.actions{display:flex;justify-content:space-between;align-items:center;margin-top:24px}
+.action-left{display:flex;gap:10px;align-items:center}
+.timer{
+  display:flex;align-items:center;gap:7px;background:#fff7e7;border:1px solid #ffe1a7;
+  color:#a76500;border-radius:999px;padding:9px 13px;font-weight:800;font-size:13px
+}
+.timer.danger{background:#fff0f0;border-color:#ffc5c5;color:#b42323}
+.check-btn{border:0;background:#5b4bff;color:#fff;border-radius:12px;padding:12px 24px;font-weight:800;cursor:pointer}
+.check-btn:disabled{opacity:.45;cursor:not-allowed}
+.feedback{text-align:center;font-weight:800;margin-top:16px;min-height:25px}
+.feedback.ok{color:#159447}.feedback.bad{color:#df3535}
+.streak-pop{position:fixed;right:25px;top:100px;background:#fff;border:1px solid #ffe0a1;color:#9b5e00;border-radius:15px;padding:12px 16px;font-weight:900;box-shadow:0 12px 30px rgba(0,0,0,.1);display:none;z-index:20}
+.drag-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.dropzone{border:2px dashed #b9c1d6;border-radius:16px;padding:17px;background:#fafbfe;min-height:105px}
+.dropzone h4{margin:0 0 9px;color:#4e5d7b;font-size:14px}
+.drop-target{min-height:55px;border-radius:12px;background:#fff;border:1px solid #e2e7f1;padding:12px;color:#8a94aa;display:flex;align-items:center}
+.drop-target.drag-over{border-color:#5b4bff;background:#f3f1ff}
+.drop-target.filled{color:#1e2b48;border-color:#a89fff;background:#f5f3ff;font-weight:600}
+.column-target{min-height:145px;display:flex;flex-direction:column;align-items:stretch;gap:10px}
+.column-target .placed-answer{width:100%;box-sizing:border-box}
+.placed-answer{cursor:grab}
+.placed-answer:active{cursor:grabbing}
+.drop-placeholder{color:#8a94aa}
+.placed-answer{display:block;width:100%}
+.drag-bank{margin-top:18px;padding:16px;border:1px solid #dfe4f1;border-radius:16px;background:#f8f9fd}
+.drag-bank-title{font-size:14px;font-weight:800;color:#35425f;margin-bottom:10px}
+.drag-items{display:grid;gap:10px}
+.drag-item{padding:14px;border:1px solid #dce2ee;background:#fff;border-radius:13px;cursor:grab;font-weight:600;box-shadow:0 5px 15px rgba(30,45,80,.05)}
+.drag-item:hover{border-color:#a89fff;box-shadow:0 8px 20px rgba(91,75,255,.10)}
+.drag-item.dragging{opacity:.45}
+.wordbank{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.word{border:1px solid #cdd4e5;background:#fff;border-radius:999px;padding:10px 14px;font-weight:700;cursor:pointer}
+.tf-list{display:grid;gap:14px;margin-top:12px}
+.tf-row{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto auto;
+  gap:10px;
+  align-items:center;
+  padding:16px 18px;
+  border:1px solid #e1e6f1;
+  border-radius:16px;
+  background:linear-gradient(180deg,#fff,#fafbfe);
+  box-shadow:0 6px 18px rgba(35,50,90,.05);
+}
+.tf-text{
+  color:#1d2a47;
+  font-size:15px;
+  line-height:1.55;
+  font-weight:600;
+}
+.tf-btn{
+  min-width:72px;
+  border:2px solid #d7ddea;
+  background:#fff;
+  color:#34415f;
+  border-radius:10px;
+  padding:9px 13px;
+  font-weight:800;
+  cursor:pointer;
+  transition:.15s;
+}
+.tf-btn:hover{border-color:#a9a1ff;background:#f7f6ff}
+.tf-btn.selected{
+  border-color:#5b4bff;
+  background:#eeecff;
+  color:#4a3fe0;
+  box-shadow:0 0 0 3px rgba(91,75,255,.10);
+}
+.tf-btn[data-val="Đúng"].selected{
+  border-color:#22a559;
+  background:#eaf9f0;
+  color:#116c37;
+  box-shadow:0 0 0 3px rgba(34,165,89,.10);
+}
+.tf-btn[data-val="Sai"].selected{
+  border-color:#ef4444;
+  background:#fff0f0;
+  color:#a51f1f;
+  box-shadow:0 0 0 3px rgba(239,68,68,.10);
+}
+@media(max-width:650px){
+  .tf-row{grid-template-columns:1fr 1fr;gap:9px}
+  .tf-text{grid-column:1 / -1}
+  .tf-btn{width:100%}
+}
+.word:hover{border-color:#5b4bff}
+.fillbox{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:20px 0}
+.blank{min-width:190px;border:2px dashed #aaa3ff;background:#f8f7ff;border-radius:13px;padding:13px 16px;font-weight:800;color:#5b4bff}
+.result{display:none;padding:45px 0 80px}
+.result-card{width:min(800px,calc(100% - 30px));margin:auto;text-align:center;padding:42px}
+.result-card h1{font-size:40px;margin:10px 0}
+.result-score{font-size:72px;font-weight:900;color:#5b4bff}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:25px 0}
+.stat{background:#f7f8fc;border:1px solid var(--line);border-radius:15px;padding:18px}
+.stat b{display:block;font-size:25px}.stat span{color:var(--muted);font-size:13px}
+.review{display:none;margin-top:20px;text-align:left}
+.review-item{padding:17px;border:1px solid var(--line);border-radius:15px;margin:10px 0;background:#fff}
+.review-item .q{font-weight:800;line-height:1.5}.review-item .a{margin-top:7px;font-size:14px}.right{color:#168b45}.wrongt{color:#c92e2e}
+@media(max-width:800px){
+  .topbar{padding:0 16px}.container{width:min(100% - 20px,1180px)}
+  .lesson-grid{grid-template-columns:1fr 1fr}.question-card{padding:25px 20px}
+  .question{font-size:25px}.drag-grid,.feature-grid{grid-template-columns:1fr}
+}
+@media(max-width:520px){
+  .lesson-grid{grid-template-columns:1fr}.hero h1{font-size:34px}
+  .course-card{padding:20px}.quiz-main{width:calc(100% - 16px)}
+  .quiz-info{gap:10px;font-size:12px}.question-card{padding:20px 15px}
+  .option{padding:14px 13px;font-size:15px}.stats{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="logo">Quiz Lịch Sử Đảng</div>
+  <div class="top-actions">
+    <button class="ghost-btn" onclick="showIntro()">Giới thiệu</button>
+    <button class="icon-btn" onclick="toggleSound()" id="soundBtn">🔊 Âm thanh</button>
+  </div>
+</header>
+
+<section id="home" class="home">
+  <div class="container">
+    <div class="hero">
+      <span class="badge">STUDY QUIZ</span>
+      <h1>Ôn tập Lịch sử Đảng</h1>
+      <p>Bộ câu hỏi đúng theo tài liệu đã cung cấp. Có trắc nghiệm, nhiều đáp án, kéo thả, điền từ, tính điểm, chuỗi liên tiếp, thời gian và hiệu ứng âm thanh.</p>
+    </div>
+
+    <div class="card course-card">
+      <div class="eyebrow">CHỌN BÀI</div>
+      <h2>Lịch sử Đảng Cộng sản Việt Nam</h2>
+      <div class="count">Đã mở Bài 1, Bài 2 và Bài 3 · 126 câu hỏi</div>
+
+      <div class="lesson-grid" id="lessonGrid"></div>
+
+      <div class="start-row">
+        <button class="primary" onclick="openSetup()">Bắt đầu làm bài</button>
+        <button class="secondary" onclick="openSetup('exam')">Thi thử</button>
+      </div>
+    </div>
+
+    <div class="card features">
+      <h3>Chức năng</h3>
+      <div class="feature-grid">
+        <div class="feature"><b>✓</b> Tự động chuyển câu khi trả lời</div>
+        <div class="feature"><b>✓</b> Chuỗi 🔥 khi đúng liên tiếp</div>
+        <div class="feature"><b>✓</b> Thời gian cho từng câu</div>
+        <div class="feature"><b>✓</b> Âm thanh đúng / sai / hết giờ</div>
+        <div class="feature"><b>✓</b> Hỗ trợ 1 đáp án và nhiều đáp án</div>
+        <div class="feature"><b>✓</b> Bài 2 có 44 câu, gồm trắc nghiệm, nhiều đáp án, Đúng/Sai, kéo thả và điền từ</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="setup-overlay" id="setupOverlay" onclick="if(event.target===this)closeSetup()">
+  <div class="setup-modal">
+    <div class="setup-head">
+      <div><h2 id="setupTitle">Thiết lập Bài 1</h2><p>Chọn cách làm bài trước khi bắt đầu.</p></div>
+      <button class="close-btn" onclick="closeSetup()">×</button>
+    </div>
+
+    <div class="setting-group">
+      <label class="title">Chế độ</label>
+      <div class="mode-grid">
+        <button class="setting-option active" id="modePractice" onclick="chooseMode('practice')">Luyện tập</button>
+        <button class="setting-option" id="modeExam" onclick="chooseMode('exam')">Thi thử</button>
+      </div>
+    </div>
+
+    <div class="setting-group">
+      <label class="title">Thời gian cho mỗi câu</label>
+      <div class="time-grid" id="timeGrid"></div>
+      <div class="custom-time"><input id="customTime" type="number" min="5" max="600" placeholder="Tự nhập (giây)"><button class="secondary" onclick="chooseTime(Number(document.getElementById('customTime').value))">Áp dụng</button></div>
+    </div>
+
+    <div class="setting-group">
+      <label class="title">Trộn câu hỏi và đáp án</label>
+      <div class="switch-row"><span>Đảo thứ tự câu hỏi</span><div class="switch" id="shuffleQuestions" onclick="toggleSetting('shuffleQuestions')"></div></div>
+      <div class="switch-row"><span>Đảo thứ tự đáp án</span><div class="switch on" id="shuffleAnswers" onclick="toggleSetting('shuffleAnswers')"></div></div>
+    </div>
+
+    <div class="setup-actions">
+      <button class="secondary" onclick="closeSetup()">Hủy</button>
+      <button class="primary" onclick="startConfiguredQuiz()">Bắt đầu làm bài</button>
+    </div>
+  </div>
+</div>
+
+<section id="quizShell" class="quiz-shell">
+  <div class="quizbar">
+    <div class="quizbar-inner">
+      <div class="quiz-info">
+        <span id="qCounter">Câu 1/42</span>
+        <span class="score">Điểm: <span id="score">0</span></span>
+        <span class="streak">🔥 Chuỗi: <span id="streak">0</span></span>
+        <span class="mode" id="modeLabel">Luyện tập</span>
+        <button class="quiz-home-btn" onclick="goHomeFromQuiz()">Trang chủ</button>
+      </div>
+      <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+  </div>
+
+  <main class="quiz-main">
+    <div class="question-card" id="questionCard"></div>
+    <div class="streak-pop" id="streakPop"></div>
+  </main>
+</section>
+
+<section id="result" class="result">
+  <div class="card result-card">
+    <div class="eyebrow">KẾT QUẢ</div>
+    <h1>Hoàn thành bài 1 🎉</h1>
+    <div class="result-score" id="finalScore">0</div>
+    <p id="resultText"></p>
+    <div class="stats">
+      <div class="stat"><b id="correctCount">0</b><span>Câu đúng</span></div>
+      <div class="stat"><b id="wrongCount">0</b><span>Câu sai</span></div>
+      <div class="stat"><b id="bestStreak">0</b><span>Chuỗi cao nhất</span></div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="primary" onclick="location.reload()">↻ Làm lại</button>
+      <button class="secondary" onclick="showReview()">Xem đáp án</button>
+      <button class="secondary" onclick="goHome()">← Về chọn bài</button>
+    </div>
+    <div class="review" id="review"></div>
+  </div>
+</section>
+
+<script>
+const QUESTIONS = [{"id": 1, "question": "Nhiệm vụ của môn học Lịch sử Đảng Cộng sản Việt Nam là gì?", "options": [{"key": "A", "text": "Trình bày có hệ thống đường lối, Cương lĩnh của Đảng. Tái hiện, tổng kết tiến trình lịch sử lãnh đạo, đấu tranh của Đảng.", "correct": true}, {"key": "B", "text": "Trình bày có hệ thống đường lối, Cương lĩnh của Đảng, phân tích các vấn đề chính trị - xã hội.", "correct": false}, {"key": "C", "text": "Tổng kết lịch sử của Đảng, lãnh đạo cách mạng.", "correct": false}, {"key": "D", "text": "Tái hiện tiến trình lịch sử lãnh đạo, đấu tranh của Đảng, phân tích các vấn đề chính trị.", "correct": false}], "type": "single"}, {"id": 2, "question": "Các phương pháp cơ bản trong nghiên cứu môn Lịch sử Đảng Cộng sản Việt Nam là gì?", "options": [{"key": "A", "text": "Phương pháp lịch sử, phương pháp logic, phương pháp tổng kết thực tiễn lịch sử, phương pháp so sánh, phương pháp làm việc nhóm.", "correct": true}, {"key": "B", "text": "Phương pháp nêu vấn đề, phương pháp thống kê.", "correct": false}, {"key": "C", "text": "Phương pháp liệt kê, phương pháp nêu vấn đề.", "correct": false}, {"key": "D", "text": "Phương pháp thống kê, phương pháp thuyết trình, phương pháp tổng kết thực tiễn lịch sử, phương pháp so sánh.", "correct": false}], "type": "single"}, {"id": 3, "question": "Chức năng của môn học Lịch sử Đảng Cộng sản Việt Nam là:", "options": [{"key": "A", "text": "Chức năng tổng kết, chức năng giáo dục.", "correct": false}, {"key": "B", "text": "Chức năng định hướng, chức năng biện luận, chức năng dự báo và phê phán.", "correct": false}, {"key": "C", "text": "Chức năng biện luận, chức năng dự báo và phê phán.", "correct": false}, {"key": "D", "text": "Chức năng nhận thức, chức năng giáo dục, chức năng dự báo và phê phán.", "correct": true}], "type": "single"}, {"id": 4, "question": "Ba thời kỳ nổi bật của lịch sử Đảng Cộng sản Việt Nam là những thời kỳ nào?", "options": [{"key": "A", "text": "1930–1945; 1945–1975 và 1975 đến nay.", "correct": true}, {"key": "B", "text": "1930–1945; 1945–1954 và 1954–1975.", "correct": false}, {"key": "C", "text": "1930–1945; 1975–1986 và 1986 đến nay.", "correct": false}, {"key": "D", "text": "1930–1945; 1945–1954 và 1975 đến nay.", "correct": false}], "type": "single"}, {"id": 5, "question": "Phương pháp cơ bản để nghiên cứu môn học Lịch sử Đảng Cộng sản Việt Nam là gì?", "options": [{"key": "A", "text": "Phương pháp so sánh, tổng hợp.", "correct": false}, {"key": "B", "text": "Phương pháp tổng kết thực tiễn, phương pháp thống kê.", "correct": false}, {"key": "C", "text": "Phương pháp lịch sử, phương pháp phân tích.", "correct": false}, {"key": "D", "text": "Phương pháp lịch sử, phương pháp logic.", "correct": true}], "type": "single"}, {"id": 6, "question": "Ngày lễ kỷ niệm thành lập Đảng Cộng sản Việt Nam là ngày nào?", "options": [{"key": "A", "text": "Ngày 24/2.", "correct": false}, {"key": "B", "text": "Ngày 6/1.", "correct": false}, {"key": "C", "text": "Ngày 6/2.", "correct": false}, {"key": "D", "text": "Ngày 3/2.", "correct": true}], "type": "single"}, {"id": 7, "question": "Cương lĩnh chính trị đầu tiên của Đảng do Nguyễn Ái Quốc soạn thảo xác định phương hướng chiến lược của cách mạng Việt Nam là gì?", "options": [{"key": "A", "text": "Cách mạng tư sản dân quyền và thổ địa cách mạng để đi tới xã hội cộng sản.", "correct": true}, {"key": "B", "text": "Cách mạng ruộng đất và cách mạng tư sản.", "correct": false}, {"key": "C", "text": "Cách mạng tư sản và cách mạng dân chủ tư sản.", "correct": false}, {"key": "D", "text": "Cách mạng vô sản, cách mạng xã hội chủ nghĩa bỏ qua tư bản chủ nghĩa.", "correct": false}], "type": "single"}, {"id": 8, "question": "Phan Bội Châu là đại diện cho xu hướng nào trong phong trào đấu tranh theo khuynh hướng dân chủ tư sản ở Việt Nam đầu thế kỷ XX?", "options": [{"key": "A", "text": "Xu hướng bạo động.", "correct": true}, {"key": "B", "text": "Xu hướng đấu tranh bằng phương pháp hòa bình.", "correct": false}, {"key": "C", "text": "Xu hướng cải cách.", "correct": false}, {"key": "D", "text": "Xu hướng quốc gia cải lương.", "correct": false}], "type": "single"}, {"id": 9, "question": "Cơ quan ngôn luận của Hội Việt Nam Cách mạng Thanh niên là:", "options": [{"key": "A", "text": "Báo Đời sống công nhân.", "correct": false}, {"key": "B", "text": "Báo Nhân đạo.", "correct": false}, {"key": "C", "text": "Báo Thanh niên.", "correct": true}, {"key": "D", "text": "Báo Lao động.", "correct": false}], "type": "single"}, {"id": 10, "question": "Tổng Bí thư đầu tiên của Đảng Cộng sản Đông Dương là ai?", "options": [{"key": "A", "text": "Lê Hồng Phong.", "correct": false}, {"key": "B", "text": "Hồ Chí Minh.", "correct": false}, {"key": "C", "text": "Trần Phú.", "correct": true}, {"key": "D", "text": "Hà Huy Tập.", "correct": false}], "type": "single"}, {"id": 11, "question": "Phong trào công nhân Việt Nam phát triển từ tự phát lên tự giác vào thời gian nào?", "options": [{"key": "A", "text": "Năm 1930 (Đảng Cộng sản Việt Nam ra đời).", "correct": true}, {"key": "B", "text": "Năm 1925 (cuộc bãi công Ba Son).", "correct": false}, {"key": "C", "text": "Năm 1920 (tổ chức công hội ở Sài Gòn được thành lập).", "correct": false}, {"key": "D", "text": "Năm 1929 (sự ra đời ba tổ chức cộng sản).", "correct": false}], "type": "single"}, {"id": 12, "question": "Trong giai đoạn hiện nay, vai trò của Đảng Cộng sản Việt Nam được xác định là:", "options": [{"key": "A", "text": "Động lực cách mạng.", "correct": false}, {"key": "B", "text": "Vai trò định hướng cho cách mạng Việt Nam.", "correct": false}, {"key": "C", "text": "Vai trò nòng cốt.", "correct": false}, {"key": "D", "text": "Lãnh đạo cách mạng.", "correct": true}], "type": "single"}, {"id": 13, "question": "Cương lĩnh chính trị đầu tiên của Đảng Cộng sản Việt Nam đã kết hợp đúng vấn đề:", "options": [{"key": "A", "text": "Kinh tế và chính trị.", "correct": false}, {"key": "B", "text": "Phong kiến và tư sản.", "correct": false}, {"key": "C", "text": "Dân tộc và giai cấp.", "correct": true}, {"key": "D", "text": "Dân tộc và quân chủ.", "correct": false}], "type": "single"}, {"id": 14, "question": "Nguyên nhân trực tiếp đặt ra yêu cầu thành lập chi bộ cộng sản đầu tiên của Việt Nam?", "options": [{"key": "A", "text": "Do Bắc Kỳ là trung tâm cuộc khai thác thuộc địa lần thứ hai.", "correct": false}, {"key": "B", "text": "Do sự phát triển của phong trào cách mạng, tình thế cấp bách của công nhân cao.", "correct": true}, {"key": "C", "text": "Do chủ nghĩa Mác – Lênin được truyền bá vào Việt Nam.", "correct": false}, {"key": "D", "text": "Do Bắc Kỳ tập trung nhiều trung tâm công nghiệp.", "correct": false}], "type": "single"}, {"id": 15, "question": "Nội dung nào sau đây phản ánh không đúng ý nghĩa thành lập Đảng Cộng sản Việt Nam?", "options": [{"key": "A", "text": "Là sự chuẩn bị tất yếu đầu tiên có tính chất quyết định cho những bước phát triển nhảy vọt mới trong lịch sử dân tộc Việt Nam.", "correct": false}, {"key": "B", "text": "Là bước ngoặt vĩ đại trong lịch sử cách mạng Việt Nam, chấm dứt thời kỳ khủng hoảng, bế tắc về đường lối và giai cấp lãnh đạo cách mạng.", "correct": false}, {"key": "C", "text": "Là một xu thế khách quan của cuộc vận động giải phóng dân tộc theo con đường cách mạng tư sản.", "correct": true}, {"key": "D", "text": "Là sản phẩm của sự kết hợp giữa chủ nghĩa Mác – Lênin với phong trào công nhân và phong trào yêu nước ở Việt Nam trong thời đại mới.", "correct": false}], "type": "single"}, {"id": 16, "question": "Chọn đáp án đúng và đầy đủ nhất cho câu hỏi: Đảng lãnh đạo cách mạng giải phóng dân tộc, xây dựng và phát triển đất nước bằng gì?", "options": [{"key": "A", "text": "Chính sách cụ thể đặt ra trong từng thời kỳ lịch sử", "correct": false}, {"key": "B", "text": "Cương lĩnh chính trị đầu tiên của Đảng", "correct": false}, {"key": "C", "text": "Cương lĩnh xây dựng đất nước trong thời kỳ quá độ lên chủ nghĩa xã hội", "correct": false}, {"key": "D", "text": "Cương lĩnh, đường lối, chủ trương, chính sách lớn của Đảng", "correct": true}], "type": "single"}, {"id": 17, "question": "“Làm rõ vai trò, sức chiến đấu của hệ thống tổ chức đảng từ Trung ương đến cơ sở trong lãnh đạo, tổ chức thực tiễn” là:", "options": [{"key": "A", "text": "Một nhiệm vụ của khoa học Lịch sử Đảng Cộng sản Việt Nam", "correct": true}, {"key": "B", "text": "Một vai trò của khoa học Lịch sử Đảng Cộng sản Việt Nam", "correct": false}, {"key": "C", "text": "Một chức năng của khoa học Lịch sử Đảng Cộng sản Việt Nam", "correct": false}, {"key": "D", "text": "Một đối tượng của khoa học Lịch sử Đảng Cộng sản Việt Nam", "correct": false}], "type": "single"}, {"id": 18, "question": "Năm 1929 ở Việt Nam đã xuất hiện các tổ chức cộng sản nào?", "options": [{"key": "A", "text": "Tân Việt, An Nam Cộng sản Đảng", "correct": false}, {"key": "B", "text": "Tổ chức Việt Minh, Đông Dương Cộng sản liên đoàn", "correct": false}, {"key": "C", "text": "An Nam Cộng sản Đảng, Đông Dương Cộng sản Đảng và Đông Dương Cộng sản liên đoàn", "correct": true}, {"key": "D", "text": "Việt Nam cách mạng thanh niên, Việt Nam độc lập đồng minh", "correct": false}], "type": "single"}, {"id": 19, "question": "Nguyễn Ái Quốc lựa chọn con đường giải phóng dân tộc theo khuynh hướng chính trị nào?", "options": [{"key": "A", "text": "Khuynh hướng dân chủ tư sản", "correct": false}, {"key": "B", "text": "Khuynh hướng tư sản", "correct": false}, {"key": "C", "text": "Khuynh hướng vô sản", "correct": true}, {"key": "D", "text": "Khuynh hướng phong kiến", "correct": false}], "type": "single"}, {"id": 20, "question": "Đâu không phải là luận điểm chứng minh việc thành lập Đảng Cộng sản Việt Nam là một bước ngoặt vĩ đại của lịch sử Việt Nam?", "options": [{"key": "A", "text": "Chấm dứt cuộc khủng hoảng về đường lối cách mạng", "correct": false}, {"key": "B", "text": "Đánh dấu phong trào công nhân hoàn toàn trở thành một phong trào tự giác", "correct": false}, {"key": "C", "text": "Là sự chuẩn bị tất yếu đầu tiên có tính quyết định cho những bước phát triển tiếp theo", "correct": false}, {"key": "D", "text": "Đánh dấu khối liên minh công - nông đã được hình thành trong thực tế", "correct": true}], "type": "single"}, {"id": 21, "question": "Quy luật ra đời và phát triển của Đảng Cộng sản Việt Nam là:", "options": [{"key": "A", "text": "Phong trào yêu nước kết hợp với tư tưởng Hồ Chí Minh", "correct": false}, {"key": "B", "text": "Chủ nghĩa Mác - Lênin và phong trào yêu nước", "correct": false}, {"key": "C", "text": "Chủ nghĩa Mác - Lênin kết hợp với phong trào công nhân và phong trào yêu nước", "correct": true}, {"key": "D", "text": "Chủ nghĩa Mác - Lênin và phong trào công nhân", "correct": false}], "type": "single"}, {"id": 22, "question": "Hội nghị thành lập Đảng năm 1930 do ai chủ trì?", "options": [{"key": "A", "text": "Trịnh Đình Cửu", "correct": false}, {"key": "B", "text": "Nguyễn Ái Quốc", "correct": true}, {"key": "C", "text": "Nguyễn Đức Cảnh", "correct": false}, {"key": "D", "text": "Trần Phú", "correct": false}], "type": "single"}, {"id": 23, "question": "Tháng 6/1925, từ lực lượng nòng cốt là nhóm Cộng sản Đoàn, Nguyễn Ái Quốc đã thành lập tổ chức nào?", "options": [{"key": "A", "text": "Tâm tâm xã", "correct": false}, {"key": "B", "text": "Việt Nam Quốc dân Đảng", "correct": false}, {"key": "C", "text": "Tân Việt cách mạng Đảng", "correct": false}, {"key": "D", "text": "Hội Việt Nam cách mạng Thanh niên", "correct": true}], "type": "single"}, {"id": 24, "question": "Hội Việt Nam Cách mạng Thanh niên phát động phong trào “vô sản hoá” vào thời gian nào?", "options": [{"key": "A", "text": "Cuối năm 1926", "correct": false}, {"key": "B", "text": "Cuối năm 1929", "correct": false}, {"key": "C", "text": "Cuối năm 1927", "correct": false}, {"key": "D", "text": "Cuối năm 1928", "correct": true}], "type": "single"}, {"id": 25, "question": "Tổ chức tiền thân của Đảng Cộng sản Việt Nam do đồng chí Nguyễn Ái Quốc sáng lập là:", "options": [{"key": "A", "text": "Đông Dương Cộng sản Liên đoàn", "correct": false}, {"key": "B", "text": "Hội Việt Nam Cách mạng Thanh niên", "correct": true}, {"key": "C", "text": "An Nam Cộng sản Đảng", "correct": false}, {"key": "D", "text": "Đông Dương Cộng sản Đảng", "correct": false}], "type": "single"}, {"id": 26, "question": "Sự kiện quan trọng mở ra thời kì mới của phong trào cách mạng Đông Dương đầu thế kỉ XX là:", "options": [{"key": "A", "text": "Đảng Cộng sản Việt Nam ra đời", "correct": true}, {"key": "B", "text": "Liên minh công-nông hình thành", "correct": false}, {"key": "C", "text": "Chủ nghĩa Tôn Trung Sơn được truyền bá", "correct": false}, {"key": "D", "text": "Sự ra đời của Tân Việt cách mạng Đảng", "correct": false}], "type": "single"}, {"id": 27, "question": "Nhân tố hàng đầu mang tính quyết định cho những thắng lợi về sau của cách mạng Việt Nam là:", "options": [{"key": "A", "text": "Sự giúp đỡ của các lực lượng dân chủ thế giới", "correct": false}, {"key": "B", "text": "Tinh thần đại đoàn kết của các tầng lớp nhân dân", "correct": false}, {"key": "C", "text": "Sự phát triển mạnh mẽ của đất nước về kinh tế, chính trị", "correct": false}, {"key": "D", "text": "Sự lãnh đạo đúng đắn của Đảng Cộng sản Việt Nam", "correct": true}], "type": "single"}, {"id": 28, "question": "Đối tượng nghiên cứu của môn học Lịch sử Đảng Cộng sản Việt Nam là:", "options": [{"key": "A", "text": "Sự ra đời, phát triển và hoạt động lãnh đạo của Đảng qua các thời kỳ lịch sử", "correct": true}, {"key": "B", "text": "Sự phát triển của các hình thái kinh tế xã hội", "correct": false}, {"key": "C", "text": "Tư tưởng Hồ Chí Minh", "correct": false}, {"key": "D", "text": "Chủ nghĩa Mác- Lênin", "correct": false}], "type": "single"}, {"id": 29, "question": "Mâu thuẫn cơ bản và chủ yếu ở Việt Nam đầu thế kỷ XX là:", "options": [{"key": "A", "text": "Mâu thuẫn giữa công nhân và nông dân với đế quốc và phong kiến", "correct": false}, {"key": "B", "text": "Mâu thuẫn giữa dân tộc Việt Nam với đế quốc xâm lược và tay sai của chúng", "correct": true}, {"key": "C", "text": "Mâu thuẫn giữa giai cấp nông dân với giai cấp địa chủ phong kiến", "correct": false}, {"key": "D", "text": "Mâu thuẫn giữa giai cấp công nhân với giai cấp tư sản", "correct": false}], "type": "single"}, {"id": 30, "question": "Đảng Cộng sản Việt Nam ra đời là kết quả của: (chọn đáp án đúng và đầy đủ nhất)", "options": [{"key": "A", "text": "Các phong trào yêu nước của dân tộc phát triển mạnh mẽ", "correct": false}, {"key": "B", "text": "Cuộc đấu tranh dân tộc và giai cấp quyết liệt của nhân dân Việt Nam", "correct": true}, {"key": "C", "text": "Sự phát triển mạnh của phong trào yêu nước theo khuynh hướng vô sản", "correct": false}, {"key": "D", "text": "Cuộc đấu tranh mạnh mẽ của giai cấp công nhân Việt Nam", "correct": false}], "type": "single"}, {"id": 31, "question": "Trong Hội nghị thành lập Đảng tháng 2/1930, Nguyễn Ái Quốc nêu ra những điểm cần thảo luận, thống nhất là (chọn 3 đáp án đúng):", "options": [{"key": "A", "text": "Thảo Chính cương và Điều lệ sơ lược của Đảng", "correct": true}, {"key": "B", "text": "Định tên Đảng là Đảng Cộng sản Việt Nam", "correct": true}, {"key": "C", "text": "Định tên Đảng là Đảng Cộng sản Đông Dương", "correct": false}, {"key": "D", "text": "Định kế hoạch thực hiện việc thống nhất trong nước", "correct": true}], "type": "single"}, {"id": 32, "question": "Kéo thả đáp án vào các ô tương ứng để làm rõ nội dung của Cương lĩnh chính trị tháng 2/1930:", "options": [], "type": "drag", "pairs": [["Lãnh đạo cách mạng", "“Đảng là đội tiên phong của giai cấp vô sản, phải thu phục cho được đại bộ phận của giai cấp mình.”"], ["Nhiệm vụ chủ yếu trước mắt của cách mạng", "“Đánh đổ đế quốc chủ nghĩa Pháp và bọn phong kiến, làm cho nước Nam được hoàn toàn độc lập.”"], ["Đường lối chiến lược", "“Chủ trương làm tư sản dân quyền cách mạng và thổ địa cách mạng để đi tới xã hội cộng sản.”"], ["Lực lượng cách mạng", "“Phải thu phục cho được đại bộ phận giai cấp mình, phải thu phục cho được đại bộ phận dân cày.”"]]}, {"id": 33, "question": "Hội nghị thành lập Đảng tháng 2/1930 đã thông qua các văn kiện quan trọng do lãnh tụ Nguyễn Ái Quốc soạn thảo là: (chọn 3 đáp án đúng)", "options": [{"key": "A", "text": "Bản án chế độ thực dân Pháp", "correct": false}, {"key": "B", "text": "Chánh cương vắn tắt của Đảng, Sách lược vắn tắt của Đảng", "correct": true}, {"key": "C", "text": "Chương trình tóm tắt của Đảng", "correct": true}, {"key": "D", "text": "Điều lệ tóm tắt của Đảng Cộng sản Việt Nam", "correct": true}], "type": "single"}, {"id": 34, "question": "Ý nghĩa sự ra đời của Đảng Cộng sản Việt Nam là: (chọn 2 đáp án đúng)", "options": [{"key": "A", "text": "Cách mạng Việt Nam trở thành một bộ phận khăng khít của cách mạng vô sản thế giới", "correct": true}, {"key": "B", "text": "Đánh dấu sự trưởng thành của giai cấp công nhân sang giai đoạn tự phát", "correct": false}, {"key": "C", "text": "Dân tộc sự ra đời của nước Việt Nam dân chủ Cộng hòa", "correct": false}, {"key": "D", "text": "Chấm dứt sự khủng hoảng về đường lối cứu nước", "correct": true}], "type": "single"}, {"id": 35, "question": "Sự ra đời của Đảng Cộng sản Việt Nam mang ý nghĩa: (chọn 3 đáp án đúng)", "options": [{"key": "A", "text": "Sự đoàn kết, nhất trí của những chiến sĩ cách mạng tiên phong vì lợi ích của giai cấp và dân tộc", "correct": true}, {"key": "B", "text": "Thể hiện vai trò lãnh đạo của Quốc tế cộng sản", "correct": false}, {"key": "C", "text": "Thể hiện sự chuẩn bị tích cực, sáng tạo, bền bỉ của lãnh tụ Nguyễn Ái Quốc", "correct": true}, {"key": "D", "text": "Là kết quả của sự vận động, phát triển và thống nhất của phong trào cách mạng trong cả nước", "correct": true}], "type": "single"}, {"id": 36, "question": "Vì sao nói sự ra đời của Đảng Cộng sản Việt Nam là bước ngoặt lịch sử của cách mạng Việt Nam? (chọn 2 đáp án đúng)", "options": [{"key": "A", "text": "Xóa bỏ mâu thuẫn giai cấp trong xã hội Việt Nam", "correct": false}, {"key": "B", "text": "Đưa Việt Nam trở thành một cường quốc trên trường quốc tế", "correct": false}, {"key": "C", "text": "Vì đây là nhân tố hàng đầu quyết định đưa cách mạng Việt Nam đi từ thắng lợi này đến thắng lợi khác", "correct": true}, {"key": "D", "text": "Là yếu tố quyết định sự phát triển của dân tộc và chấm dứt khủng hoảng về đường lối lãnh đạo", "correct": true}], "type": "single"}, {"id": 37, "question": "Điểm sáng tạo của Cương lĩnh chính trị đầu tiên của Đảng Cộng sản Việt Nam do Nguyễn Ái Quốc soạn thảo là gì? (chọn 2 đáp án đúng)", "options": [{"key": "A", "text": "Đánh giá đúng khả năng cách mạng của tiểu tư sản, tư sản dân tộc, trung tiểu địa chủ", "correct": true}, {"key": "B", "text": "Xác định đúng đắn mối quan hệ giữa cách mạng Việt Nam với cách mạng thế giới, đặc biệt là cách mạng vô sản ở Pháp", "correct": true}, {"key": "C", "text": "Xác định lực lượng lãnh đạo là công nhân, nông dân", "correct": false}, {"key": "D", "text": "Nhấn mạnh thực hiện nhiệm vụ “thổ địa cách mạng”", "correct": false}], "type": "single"}, {"id": 38, "question": "Nội dung nào phản ánh không đúng về đóng góp của Nguyễn Ái Quốc trong Hội nghị hợp nhất các tổ chức cộng sản ở Việt Nam đầu 1930? (chọn 2 đáp án)", "options": [{"key": "A", "text": "Soạn thảo Luận cương chính trị tháng 10/1930", "correct": true}, {"key": "B", "text": "Soạn thảo Cương lĩnh Chính trị đầu tiên của Đảng", "correct": false}, {"key": "C", "text": "Tuyên truyền chủ nghĩa Mác Lê-nin cho những người cộng sản Việt Nam", "correct": true}, {"key": "D", "text": "Là người tổ chức hội nghị thành lập Đảng", "correct": false}], "type": "single"}, {"id": 39, "question": "Nội dung nào sau đây KHÔNG phải là mục tiêu đấu tranh của Cương lĩnh chính trị tháng 2/1930? (chọn 2 đáp án đúng)", "options": [{"key": "A", "text": "Lập ra chính phủ dân chủ cộng hòa, tư sản dân quyền", "correct": true}, {"key": "B", "text": "Lật đổ đế quốc Pháp, giành độc lập dân tộc", "correct": false}, {"key": "C", "text": "Đánh đổ địa chủ, phong kiến, giành quyền lợi cho nông dân", "correct": false}, {"key": "D", "text": "Xây dựng nước Việt Nam dân chủ cộng hòa", "correct": true}], "type": "single"}, {"id": 40, "question": "Nguyễn Ái Quốc đã chỉ rõ tinh thần đoàn kết quốc tế được xác định trong Cương lĩnh tháng 2/1930 là (chọn 2 đáp án đúng)", "options": [{"key": "A", "text": "Cách mạng Việt Nam có mối liên hệ mật thiết với giai cấp vô sản các nước, trừ giai cấp vô sản Pháp", "correct": false}, {"key": "B", "text": "Tranh thủ sự đoàn kết, ủng hộ của các dân tộc bị áp bức và giai cấp vô sản thế giới, nhất là giai cấp vô sản Pháp", "correct": true}, {"key": "C", "text": "Cách mạng Việt Nam chỉ có mối liên hệ với các nước xã hội chủ nghĩa", "correct": false}, {"key": "D", "text": "Cách mạng Việt Nam liên lạc mật thiết và là một bộ phận của cách mạng vô sản thế giới", "correct": true}], "type": "single"}, {"id": 41, "question": "Điền từ còn thiếu vào chỗ trống: “Nhiệm vụ chủ yếu, trước mắt của cách mạng Việt Nam được xác định trong cương lĩnh chính trị tháng 2/1930 là: “Đánh đổ ... và bọn phong kiến, làm cho nước Nam được hoàn toàn độc lập””", "options": [{"key": "A", "text": "đế quốc Mỹ", "correct": false}, {"key": "B", "text": "chủ nghĩa tư bản", "correct": false}, {"key": "C", "text": "thực dân Pháp", "correct": false}, {"key": "D", "text": "chủ nghĩa đế quốc", "correct": false}], "type": "fill", "answerText": "đế quốc chủ nghĩa Pháp"}, {"id": 42, "question": "Điền từ còn thiếu vào chỗ trống để hoàn thiện nhận định sau: “Đảng là đội tiên phong của _ giai cấp phải thu phục cho được đại bộ phận giai cấp mình, phải làm cho giai cấp mình lãnh đạo được dân chúng”.", "options": [{"key": "A", "text": "nông dân", "correct": false}, {"key": "B", "text": "tư sản", "correct": false}, {"key": "C", "text": "công nhân", "correct": false}, {"key": "D", "text": "trí thức", "correct": false}], "type": "fill", "answerText": "Vô sản"}];
+
+
+const QUESTIONS_B2 = [{"id": 1, "question": "Chọn khẳng định đúng:", "options": [{"key": "A", "text": "Luận cương chính trị của Đảng Cộng sản Đông Dương, Án Nghị quyết của Trung ương toàn thể Đại hội, Điều lệ Đảng (tháng 10/1930) hợp thành Lời kêu gọi của Đảng", "correct": false}, {"key": "B", "text": "Luận cương chính trị của Đảng Cộng sản Đông Dương, Án Nghị quyết của Trung ương toàn thể Đại hội, Điều lệ Đảng (tháng 10/1930) hợp thành Chỉ thị của Đảng", "correct": false}, {"key": "C", "text": "Luận cương chính trị của Đảng Cộng sản Đông Dương, Án nghị quyết của Trung ương toàn thể Đại hội, Điều lệ Đảng (tháng 10/1930) hợp thành Cương lĩnh của Đảng", "correct": true}, {"key": "D", "text": "Luận cương chính trị của Đảng Cộng sản Đông Dương, Án Nghị quyết của Trung ương toàn thể Đại hội, Điều lệ Đảng (tháng 10/1930) hợp thành Nghị quyết của Đảng", "correct": false}], "type": "single"}, {"id": 2, "question": "Luận cương chính trị của Đảng Cộng sản Đông Dương khẳng định: nhiệm vụ cốt yếu của cách mạng tư sản dân quyền là gì?", "options": [{"key": "A", "text": "Đánh đổ đế quốc Pháp, giành độc lập dân tộc; Đánh đổ giai cấp địa chủ phong kiến, đem lại ruộng đất cho nông dân và phát triển chế độ dân chủ nhân dân, gây cơ sở cho chủ nghĩa xã hội", "correct": false}, {"key": "B", "text": "Đánh đổ đế quốc Mỹ, giành độc lập dân tộc", "correct": false}, {"key": "C", "text": "Đánh đổ triều đình phong kiến nhà Trần, đem lại ruộng đất cho nông dân", "correct": false}, {"key": "D", "text": "Đánh đổ đế quốc Pháp, làm cho Đông Dương hoàn toàn độc lập và đánh đổ giai cấp địa chủ phong kiến, đem lại ruộng đất cho nông dân", "correct": true}], "type": "single"}, {"id": 3, "question": "Luận cương chính trị của Đảng Cộng sản Đông Dương khẳng định: động lực chính của cách mạng tư sản dân quyền là gì?", "options": [{"key": "A", "text": "Tất cả các giai cấp, tầng lớp trong xã hội Việt Nam", "correct": false}, {"key": "B", "text": "Nhân dân Việt Nam, trừ bộ phận là tay sai của thực dân Pháp", "correct": false}, {"key": "C", "text": "Giai cấp vô sản và giai cấp nông dân", "correct": true}, {"key": "D", "text": "Liên minh công nhân, nông dân và trí thức", "correct": false}], "type": "single"}, {"id": 4, "question": "Cuộc họp Hội nghị của Ban Chấp hành Trung ương Đảng ngày 26/7/1936 xác định nhiệm vụ trước mắt của cách mạng Đông Dương là gì?", "options": [{"key": "A", "text": "Chống phong kiến, giành ruộng đất cho dân cày", "correct": false}, {"key": "B", "text": "Chống phản động thuộc địa và bè lũ tay sai, giành độc lập cho dân tộc", "correct": false}, {"key": "C", "text": "Chống phát xít, chống chiến tranh đế quốc, chống phản động thuộc địa và tay sai, đòi tự do, dân chủ, cơm áo và hòa bình", "correct": true}, {"key": "D", "text": "Chống thực dân Pháp, giành độc lập cho dân tộc", "correct": false}], "type": "single"}, {"id": 5, "question": "Hội nghị Trung ương Đảng (ngày 29 30/3/1938) quyết định thành lập mặt trận nào?", "options": [{"key": "A", "text": "Mặt trận thống nhất nhân dân phản đế Đông Dương", "correct": false}, {"key": "B", "text": "Mặt trận phản đế đồng minh Đông Dương", "correct": false}, {"key": "C", "text": "Mặt trận dân chủ Đông Dương", "correct": true}, {"key": "D", "text": "Mặt trận nhân dân phản đế Đông Dương", "correct": false}], "type": "single"}, {"id": 6, "question": "Tháng 6/1945, căn cứ địa chính của cách mạng cả nước là gì?", "options": [{"key": "A", "text": "Khu giải phóng miền núi phía Bắc", "correct": false}, {"key": "B", "text": "Khu giải phóng Bắc Kỳ", "correct": false}, {"key": "C", "text": "Khu giải phóng Tây Bắc", "correct": false}, {"key": "D", "text": "Khu giải phóng Việt Bắc", "correct": true}], "type": "single"}, {"id": 7, "question": "Chọn nội dung có trong Hội nghị Trung ương 8 (tháng 5/1941) của Đảng:", "options": [{"key": "A", "text": "Nhiệm vụ trước mắt của cách mạng là giành ruộng đất cho dân cày, tạm gác nhiệm vụ giải phóng dân tộc", "correct": false}, {"key": "B", "text": "Nhiệm vụ trước mắt của cách mạng: thực hiện đồng thời 2 nhiệm vụ là giải phóng dân tộc và giành ruộng đất cho dân cày", "correct": false}, {"key": "C", "text": "Cuộc cách mạng trước mắt của Việt Nam là một cuộc cách mạng tư sản dân quyền, có tính chất thổ địa và phản đế", "correct": false}, {"key": "D", "text": "Cuộc cách mạng trước mắt của Việt Nam là một cuộc cách mạng giải phóng dân tộc, hoãn cách mạng ruộng đất", "correct": true}], "type": "single"}, {"id": 8, "question": "Thời cơ cách mạng thực hiện Tổng khởi nghĩa (tháng 8/1945) tồn tại khi nào?", "options": [{"key": "A", "text": "Từ khi diễn ra Hội nghị Pốtxđam (tháng 7/1945) đến khi phát xít Nhật tuyên bố đầu hàng (ngày 13/8/1945)", "correct": false}, {"key": "B", "text": "Từ khi phát xít Nhật tuyên bố đầu hàng (ngày 13/8/1945) đến trước khi quân Đồng Minh vào Đông Dương tước khí giới quân Nhật (nửa cuối tháng 8/1945)", "correct": true}, {"key": "C", "text": "Từ khi phát xít Đức đầu hàng Liên Xô và Đồng minh (9/5/1945) đến khi phát xít Nhật tuyên bố đầu hàng (13/8/1945)", "correct": false}, {"key": "D", "text": "Từ khi diễn ra Hội nghị Pốtxđam (tháng 7/1945) đến trước khi quân Đồng Minh vào Đông Dương tước khí giới quân Nhật (nửa cuối tháng 8/1945)", "correct": false}], "type": "single"}, {"id": 9, "question": "Hội nghị Ban Chấp hành Trung ương Đảng (họp ngày 26/7/1936) chủ trương thành lập tổ chức nào để đấu tranh đòi quyền dân chủ?", "options": [{"key": "A", "text": "Mặt trận nhân dân phản đế", "correct": true}, {"key": "B", "text": "Mặt trận nông dân phản đế", "correct": false}, {"key": "C", "text": "Mặt trận công – nông phản đế", "correct": false}, {"key": "D", "text": "Mặt trận vô sản phản đế", "correct": false}], "type": "single"}, {"id": 10, "question": "Đảng Cộng sản Đông Dương xác định mục tiêu chủ yếu trước mắt của cách mạng giai đoạn 1936 1939 là gì?", "options": [{"key": "A", "text": "Đấu tranh chống chống thực dân Pháp, chống phong kiến nhằm giải phóng dân tộc và giành ruộng đất cho nông dân", "correct": false}, {"key": "B", "text": "Đấu tranh chống phong kiến, giành lại ruộng đất cho dân cày", "correct": false}, {"key": "C", "text": "Đấu tranh chống phát xít, chống chiến tranh đế quốc, chống phản động thuộc địa và tay sai, đòi tự do, dân chủ, cơm áo và hòa bình", "correct": true}, {"key": "D", "text": "Đấu tranh chống phát xít, chống chiến tranh đế quốc, chống phản động thuộc địa và tay sai nhằm giải phóng dân tộc", "correct": false}], "type": "single"}, {"id": 11, "question": "Sau 30 năm hoạt động ở nước ngoài, đầu năm 1941, lãnh tụ Nguyễn Ái Quốc về nước và làm việc ở đâu?", "options": [{"key": "A", "text": "Cao Bằng", "correct": true}, {"key": "B", "text": "Hà Giang", "correct": false}, {"key": "C", "text": "Lạng Sơn", "correct": false}, {"key": "D", "text": "Thái Nguyên", "correct": false}], "type": "single"}, {"id": 12, "question": "Hội nghị lần thứ tám Ban Chấp hành Trung ương Đảng (tháng 5/1941) xác định đối tượng của cách mạng Việt Nam là gì?", "options": [{"key": "A", "text": "Đế quốc Pháp và phát xít Nhật", "correct": true}, {"key": "B", "text": "Phát xít Nhật", "correct": false}, {"key": "C", "text": "Đế quốc Pháp, phát xít Nhật và địa chủ phong kiến tay sai", "correct": false}, {"key": "D", "text": "Đế quốc Pháp", "correct": false}], "type": "single"}, {"id": 13, "question": "Tính chất của cuộc Cách mạng Tháng Tám năm 1945 là gì?", "options": [{"key": "A", "text": "Là một cuộc cách mạng giải phóng dân tộc mang tính chất dân chủ mới, toàn dân, toàn diện, lâu dài, dựa vào sức mình là chính", "correct": false}, {"key": "B", "text": "Là một cuộc cách mạng dân tộc dân chủ nhân dân có tính chất toàn dân, toàn diện, lâu dài, dựa vào sức mình là chính", "correct": false}, {"key": "C", "text": "Là một cuộc cách mạng giải phóng dân tộc mang tính chất dân chủ mới", "correct": true}, {"key": "D", "text": "Là một cuộc đấu tranh chính nghĩa có tính chất toàn dân, toàn diện, lâu dài", "correct": false}], "type": "single"}, {"id": 14, "question": "Liệt kê các hình thức mặt trận ở Việt Nam theo thứ tự thời gian thành lập?", "options": [{"key": "A", "text": "Mặt trận Dân chủ Đông Dương, Mặt trận Việt Minh, Mặt trận Liên Việt, Mặt trận Tổ quốc Việt Nam", "correct": true}, {"key": "B", "text": "Mặt trận Việt Minh, Mặt trận Dân chủ Đông Dương, Mặt trận Liên Việt, Mặt trận Tổ quốc Việt Nam", "correct": false}, {"key": "C", "text": "Mặt trận Liên Việt, Mặt trận Dân chủ Đông Dương, Mặt trận Việt Minh, Mặt trận Tổ quốc Việt Nam", "correct": false}, {"key": "D", "text": "Mặt trận Liên Việt, Mặt trận Việt Minh, Mặt trận Dân chủ Đông Dương, Mặt trận Tổ quốc Việt Nam", "correct": false}], "type": "single"}, {"id": 15, "question": "Nội dung nào sau đây không phải là giải pháp để xây dựng Đảng trong giai đoạn hiện nay?", "options": [{"key": "A", "text": "Tăng cường đổi mới nội dung, phương thức và nâng cao chất lượng công tác giáo dục chính trị, tư tưởng", "correct": false}, {"key": "B", "text": "Kiên định và tiếp tục nghiên cứu phát triển, vận dụng sáng tạo chủ nghĩa Mác Lênin, tư tưởng Hồ Chí Minh phù hợp thực tiễn Việt Nam", "correct": false}, {"key": "C", "text": "Tập trung xây dựng đội ngũ cán bộ các cấp, nhất là cấp chiến lược và người đứng đầu gắn với đổi mới, sắp xếp tổ chức bộ máy của hệ thống chính trị tinh gọn, hoạt động hiệu lực, hiệu quả", "correct": false}, {"key": "D", "text": "Hoàn thiện hệ thống pháp luật Việt Nam và cơ chế thực hiện pháp luật hiệu quả, bảo đảm nguyên tắc “thượng tôn” Hiến pháp và pháp luật", "correct": true}], "type": "single"}, {"id": 16, "question": "Luận cương chính trị của Đảng Cộng sản Đông Dương (tháng 10/1930) xác định mâu thuẫn chủ yếu của xã hội Việt Nam thuộc địa là:", "options": [{"key": "A", "text": "Mâu thuẫn giữa dân tộc Việt Nam và thực dân Pháp", "correct": false}, {"key": "B", "text": "Có 2 mâu thuẫn chủ yếu: Mâu thuẫn giữa dân tộc Việt Nam và thực dân Pháp; Mâu thuẫn giữa giai cấp nông dân và địa chủ phong kiến", "correct": false}, {"key": "C", "text": "Luận cương không nêu rõ mâu thuẫn chủ yếu của xã hội Việt Nam thuộc địa", "correct": true}, {"key": "D", "text": "Mâu thuẫn giữa giai cấp nông dân và địa chủ phong kiến", "correct": false}], "type": "single"}, {"id": 17, "question": "Luận cương chính trị của Đảng Cộng sản Đông Dương (tháng 10/1930) do ai soạn thảo?", "options": [{"key": "A", "text": "Lãnh tụ Nguyễn Ái Quốc", "correct": false}, {"key": "B", "text": "Tổng Bí thư Trần Phú", "correct": true}, {"key": "C", "text": "Tổng Bí thư Lê Hồng Phong", "correct": false}, {"key": "D", "text": "Tổng Bí thư Trường Chinh", "correct": false}], "type": "single"}, {"id": 18, "question": "Đảng Cộng sản Đông Dương xác định đối tượng của cách mạng giai đoạn 1936 – 1939 là gì?", "options": [{"key": "A", "text": "Đế quốc xâm lược", "correct": false}, {"key": "B", "text": "Địa chủ phong kiến", "correct": false}, {"key": "C", "text": "Một bộ phận đế quốc xâm lược và tay sai", "correct": true}, {"key": "D", "text": "Địa chủ phong kiến và đế quốc xâm lược", "correct": false}], "type": "single"}, {"id": 19, "question": "Hội nghị lần thứ tám Ban Chấp hành Trung ương Đảng (tháng 5/1941) chủ trương giải quyết vấn đề dân tộc trong khuôn khổ từng nước ở Đông Dương, thi hành chính sách nào?", "options": [{"key": "A", "text": "\"Dân tộc tự quyết\"", "correct": true}, {"key": "B", "text": "\"Khu vực tự quyết\"", "correct": false}, {"key": "C", "text": "\"Nhân dân tự quyết\"", "correct": false}, {"key": "D", "text": "\"Vô sản tự quyết\"", "correct": false}], "type": "single"}, {"id": 20, "question": "Tại Hội nghị cán bộ Trung ương (tháng 11-1940), Ban Chấp hành Trung ương Đảng nhận định điều gì?", "options": [{"key": "A", "text": "Cách mạng phản đế và cách mạng thổ địa không thể đồng thời tiến, cách mạng phản đế làm trước, cách mạng thổ địa làm sau", "correct": true}, {"key": "B", "text": "Làm tư sản dân quyền cách mạng có tính chất thổ địa và phản đế, đòi tự do, dân chủ, cơm áo, hòa bình", "correct": false}, {"key": "C", "text": "Cách mạng phản đế và cách mạng thổ địa phải đồng thời tiến, không thể cái làm trước, cái làm sau", "correct": false}, {"key": "D", "text": "Cách mạng phản đế và cách mạng thổ địa không thể đồng thời tiến, cách mạng thổ địa làm trước, cách mạng phản đế làm sau", "correct": false}], "type": "single"}, {"id": 21, "question": "Hội nghị toàn quốc của Đảng (họp ngày 14 – 15/8/1945 tại Tân Trào) quyết định phát động toàn dân nổi dậy tổng khởi nghĩa giành chính quyền với những nguyên tắc chỉ đạo là gì?", "options": [{"key": "A", "text": "Đánh nhanh, thắng nhanh", "correct": false}, {"key": "B", "text": "Tập trung, thống nhất và kịp thời", "correct": true}, {"key": "C", "text": "Đánh chắc, thắng chắc", "correct": false}, {"key": "D", "text": "Đoàn kết, quyết tâm và kịp thời", "correct": false}], "type": "single"}, {"id": 22, "question": "Bài học “phải giương cao ngọn cờ độc lập dân tộc” rút ra từ cuộc Cách mạng Tháng Tám năm 1945 được thể hiện chủ yếu như thế nào trong giai đoạn hiện nay?", "options": [{"key": "A", "text": "Giải quyết đúng đắn mối quan hệ giữa hai nhiệm vụ phát triển nền kinh tế thị trường định hướng xã hội chủ nghĩa và vận dụng cách mạng công nghiệp", "correct": false}, {"key": "B", "text": "Quyết tâm thực hiện hai nhiệm vụ chống chủ nghĩa tư bản và xóa bỏ tàn dư của xã hội phong kiến", "correct": false}, {"key": "C", "text": "Giải quyết đúng đắn mối quan hệ giữa hai nhiệm vụ độc lập dân tộc và cách mạng ruộng đất", "correct": false}, {"key": "D", "text": "Kết hợp chặt chẽ giữa hai nhiệm vụ xây dựng và bảo vệ Tổ quốc xã hội chủ nghĩa", "correct": true}], "type": "single"}, {"id": 23, "question": "Hội nghị lần thứ nhất của Ban Chấp hành Trung ương Đảng (tháng 10/1930) quyết định đổi tên Đảng Cộng sản Việt Nam thành Đảng Cộng sản Đông Dương là do:", "options": [{"key": "A", "text": "Phạm vi Đảng rộng rãi hơn và vô sản An Nam, Cao Miên, Lào cần phải liên hệ mật thiết với nhau", "correct": true}, {"key": "B", "text": "Thành lập một Đảng mới ra đời để tăng cường tổ chức lãnh đạo cuộc đấu tranh của khu vực Đông Dương", "correct": false}, {"key": "C", "text": "An Nam, Cao Miên và Lào tuy tiếng nói, phong tục khác nhau nhưng có nét tương đồng về kinh tế và chính trị, kỳ thực chỉ thành một dân tộc mà thôi", "correct": false}, {"key": "D", "text": "Theo yêu cầu của Tổng Bí thư Trần Phú", "correct": false}], "type": "single"}, {"id": 24, "question": "Điều kiện nào tạo ra khả năng đấu tranh công khai, hợp pháp cho phong trào cách mạng Đông Dương giai đoạn 1936 – 1939?", "options": [{"key": "A", "text": "Đảng Cộng sản Đông Dương lãnh đạo", "correct": false}, {"key": "B", "text": "Sự xuất hiện của chủ nghĩa phát xít và nguy cơ chiến tranh thế giới", "correct": false}, {"key": "C", "text": "Mặt trận Nhân dân Pháp lên cầm quyền", "correct": true}, {"key": "D", "text": "Chủ trương chuyển hướng chiến lược cách mạng thế giới của Quốc tế Cộng sản", "correct": false}], "type": "single"}, {"id": 25, "question": "Chính phủ Mặt trận nhân dân Pháp ra đời (năm 1936) tác động như thế nào đến điều kiện cách mạng ở Đông Dương?", "options": [{"key": "A", "text": "Tạo không khí chính trị thuận lợi cho cuộc đấu tranh đòi các quyền tự do, dân chủ, cải thiện đời sống của nhân dân các nước Đông Dương", "correct": true}, {"key": "B", "text": "Thúc đẩy mâu thuẫn trở nên gay gắt giữa nhân dân Pháp và nhân dân ở Đông Dương", "correct": false}, {"key": "C", "text": "Tạo điều kiện chín muồi cho cuộc đấu tranh giải phóng dân tộc ở các nước Đông Dương", "correct": false}, {"key": "D", "text": "Tăng cường áp bức chính trị và bóc lột kinh tế đối với nhân dân các nước Đông Dương", "correct": false}], "type": "single"}, {"id": 26, "question": "Hội nghị Ban Chấp hành Trung ương Đảng (tháng 11/1939) chủ trương thành lập Mặt trận dân tộc thống nhất phản đế Đông Dương nhằm mục đích gì?", "options": [{"key": "A", "text": "Tập hợp các giai cấp, tầng lớp trong xã hội Việt Nam đấu tranh đánh đổ đế quốc Pháp và tay sai, giành độc lập cho dân tộc, giành ruộng đất cho nông dân", "correct": false}, {"key": "B", "text": "Tập hợp tất cả các dân tộc, các giai cấp, đảng phái và cá nhân yêu nước ở Đông Dương đấu tranh đánh đổ đế quốc Pháp và tay sai, giành lại độc lập hoàn toàn cho các dân tộc Đông Dương", "correct": true}, {"key": "C", "text": "Tập hợp các giai cấp, tầng lớp trong xã hội Việt Nam đấu tranh đánh đổ đế quốc Pháp và tay sai, giành độc lập cho dân tộc", "correct": false}, {"key": "D", "text": "Tập hợp tất cả các dân tộc, các giai cấp, đảng phái và cá nhân yêu nước trong khu vực Đông Dương đấu tranh đánh đổ đế quốc phát xít Pháp Nhật, giành độc lập hoàn toàn cho các dân tộc Đông Dương", "correct": false}], "type": "single"}, {"id": 27, "question": "Phát huy bài học kinh nghiệm của Đảng Cộng sản Việt Nam về xây dựng lực lượng trong Cách mạng Tháng Tám năm 1945 được thể hiện chủ yếu như thế nào trong giai đoạn hiện nay?", "options": [{"key": "A", "text": "Xây dựng, hoàn thiện hệ thống pháp luật", "correct": false}, {"key": "B", "text": "Xây dựng nền văn hóa tiên tiến, đậm đà bản sắc dân tộc", "correct": false}, {"key": "C", "text": "Xây dựng, hoàn thiện Nhà nước pháp quyền xã hội chủ nghĩa Việt Nam", "correct": false}, {"key": "D", "text": "Nâng cao vai trò nòng cốt chính trị của Mặt trận Tổ quốc Việt Nam", "correct": true}], "type": "single"}, {"id": 28, "question": "Chủ trương điều chỉnh chiến lược cách mạng của Đảng được bắt đầu từ Hội nghị nào?", "options": [{"key": "A", "text": "Hội nghị Trung ương 7 (tháng 11/1940)", "correct": false}, {"key": "B", "text": "Hội nghị Trung ương 8 (tháng 5/1941)", "correct": false}, {"key": "C", "text": "Hội nghị Trung ương 6 (tháng 11/1939)", "correct": true}, {"key": "D", "text": "Hội nghị Trung ương 5 (tháng 3/1938)", "correct": false}], "type": "single"}, {"id": 29, "question": "Để đề ra chủ trương lãnh đạo phong trào cách mạng 1936–1939, Ban Chấp hành Trung ương Đảng xác định mối quan hệ giữa nhiệm vụ phản đế và điền địa như thế nào?", "options": [{"key": "A", "text": "Nhiệm vụ phản đế và điền địa có mối quan hệ khăng khít với nhau, trong đó nhiệm vụ phản đế quan trọng hơn, cần giải quyết trước.", "correct": false}, {"key": "B", "text": "Nhiệm vụ phản đế và điền địa có mối quan hệ khăng khít với nhau, dựa vào hoàn cảnh thực tiễn để lựa chọn nhiệm vụ nào quan trọng hơn mà giải quyết trước.", "correct": true}, {"key": "C", "text": "Nhiệm vụ phản đế và điền địa có mối quan hệ khăng khít với nhau, trong đó nhiệm vụ điền địa quan trọng hơn, cần giải quyết trước.", "correct": false}, {"key": "D", "text": "Nhiệm vụ phản đế và điền địa có mối quan hệ khăng khít với nhau và có tầm quan trọng ngang nhau.", "correct": false}], "type": "single"}, {"id": 30, "question": "Ngay sau khi Cách mạng Tháng Tám năm 1945 thành công, đã thành lập chính quyền nhà nước nào sau đây?", "options": [{"key": "A", "text": "Chính quyền nhà nước theo hình thức Xô viết.", "correct": false}, {"key": "B", "text": "Chính quyền nhà nước chuyên chính vô sản.", "correct": false}, {"key": "C", "text": "Chính quyền nhà nước quân chủ lập hiến.", "correct": false}, {"key": "D", "text": "Chính quyền nhà nước dân chủ nhân dân.", "correct": true}], "type": "single"}, {"id": 31, "question": "Đại hội đại biểu lần thứ nhất của Đảng (tháng 3/1935) xác định nhiệm vụ trước mắt của cách mạng là: (Chọn 3 đáp án đúng)", "options": [{"key": "A", "text": "Mở rộng tuyên truyền chống đế quốc, chống chiến tranh.", "correct": true}, {"key": "B", "text": "Đẩy mạnh cuộc vận động tập hợp quần chúng.", "correct": true}, {"key": "C", "text": "Thực hiện cải cách ruộng đất.", "correct": false}, {"key": "D", "text": "Củng cố và phát triển Đảng.", "correct": true}], "type": "multi"}, {"id": 32, "question": "Các tổ chức mặt trận được thành lập để tập hợp, đoàn kết các giai cấp, tầng lớp dân tộc là: (Chọn 2 đáp án đúng)", "options": [{"key": "A", "text": "Tân Việt cách mạng Đảng (tháng 7/1928).", "correct": false}, {"key": "B", "text": "Hội Phản đế đồng minh (tháng 11/1930).", "correct": true}, {"key": "C", "text": "Việt Nam Quốc dân Đảng (tháng 12/1927).", "correct": false}, {"key": "D", "text": "Việt Minh (tháng 5/1941).", "correct": true}], "type": "multi"}, {"id": 33, "question": "Những hạn chế của Luận cương chính trị (tháng 10/1930) là: (Chọn 3 đáp án đúng)", "options": [{"key": "A", "text": "Không đề ra được một chiến lược liên minh dân tộc và giai cấp rộng rãi.", "correct": true}, {"key": "B", "text": "Không vạch ra được điều kiện cốt yếu cho sự thắng lợi của cách mạng ở Đông Dương là cần phải có một Đảng Cộng sản lãnh đạo.", "correct": false}, {"key": "C", "text": "Không nêu rõ mâu thuẫn chủ yếu của xã hội Việt Nam thuộc địa.", "correct": true}, {"key": "D", "text": "Không nhấn mạnh nhiệm vụ giải phóng dân tộc.", "correct": true}], "type": "multi"}, {"id": 34, "question": "Ý nghĩa lịch sử của Cao trào cách mạng 1930–1931 đối với cách mạng Việt Nam là: (Chọn 2 đáp án đúng)", "options": [{"key": "A", "text": "Khẳng định trong thực tế năng lực lãnh đạo cách mạng của Đảng Cộng sản Việt Nam.", "correct": true}, {"key": "B", "text": "Để lại cho Đảng những kinh nghiệm quý báu về kết hợp hai nhiệm vụ phản đế và phản phong.", "correct": true}, {"key": "C", "text": "Để lại cho Đảng những kinh nghiệm quý báu về thực hiện liên minh công nông dưới sự lãnh đạo của giai cấp nông dân.", "correct": false}, {"key": "D", "text": "Để lại cho Đảng những kinh nghiệm quý báu về thực hiện chiến tranh nhân dân", "correct": false}], "type": "multi"}, {"id": 35, "question": "Luận cương chính trị (10/1930) xác định nhiệm vụ cốt yếu của cách mạng tư sản dân quyền là gì? (Chọn 2 đáp án đúng)", "options": [{"key": "A", "text": "Đánh đổ đế quốc Pháp, giành độc lập hoàn toàn.", "correct": true}, {"key": "B", "text": "Xây dựng chủ nghĩa xã hội ngay lập tức.", "correct": false}, {"key": "C", "text": "Đánh đổ phong kiến và thực hiện cách mạng thổ địa triệt để.", "correct": true}, {"key": "D", "text": "Thực hiện công nghiệp hóa đất nước.", "correct": false}], "type": "multi"}, {"id": 36, "question": "Luận cương chính trị (tháng 10/1930) khẳng định: (Chọn 2 đáp án đúng)", "options": [{"key": "A", "text": "Giải quyết vấn đề thổ địa là cơ sở để Đảng giành quyền lãnh đạo dân cày.", "correct": true}, {"key": "B", "text": "Vấn đề thổ địa là cái cốt của cách mạng tư sản dân quyền.", "correct": true}, {"key": "C", "text": "Đặt nhiệm vụ giải phóng dân tộc lên hàng đầu.", "correct": false}, {"key": "D", "text": "Cách mạng phản đế và cách mạng thổ địa phải đồng thời tiến, không thể cái làm trước, cái làm sau.", "correct": false}], "type": "multi"}, {"id": 37, "question": "Hội nghị Trung ương Đảng (29–30/3/1938) quyết định những nội dung nào? (Chọn 2 đáp án đúng)", "options": [{"key": "A", "text": "Bầu đồng chí Trường Chinh làm Tổng Bí thư của Đảng.", "correct": false}, {"key": "B", "text": "Bầu đồng chí Nguyễn Văn Cừ làm Tổng Bí thư của Đảng.", "correct": true}, {"key": "C", "text": "Lập Mặt trận Việt Minh để tập hợp rộng rãi lực lượng, phát triển phong trào.", "correct": false}, {"key": "D", "text": "Lập Mặt trận Dân chủ Đông Dương để tập hợp rộng rãi lực lượng, phát triển phong trào.", "correct": true}], "type": "multi"}, {"id": 38, "question": "Phong trào đấu tranh đòi tự do, dân chủ, cơm áo, hòa bình (1936–1939) được thực hiện dưới các hình thức nào? (Chọn 3 đáp án đúng)", "options": [{"key": "A", "text": "Đấu tranh trên mặt trận báo chí.", "correct": true}, {"key": "B", "text": "Đấu tranh nghị trường.", "correct": true}, {"key": "C", "text": "Tổ chức các cuộc mít tinh để tập hợp “dân nguyện”.", "correct": true}, {"key": "D", "text": "Đấu tranh trên mặt trận quân sự.", "correct": false}], "type": "multi"}, {"id": 39, "question": "Xác định tính ĐÚNG/SAI của các khẳng định sau: Hội nghị Trung ương lần thứ nhất (10/1930) quyết định:", "type": "tf", "statements": [{"text": "Đổi tên Đảng Cộng sản Việt Nam thành Đảng Cộng sản Đông Dương.", "answer": "Đúng"}, {"text": "Đảng ra hoạt động công khai, tách thành 3 Đảng, ở Việt Nam, Đảng có tên là Đảng Lao động Việt Nam", "answer": "Sai"}, {"text": "Đổi tên Đảng Cộng sản Việt Nam thành Đông Dương Cộng sản liên đoàn", "answer": "Sai"}, {"text": "Đổi tên Đảng Cộng sản Việt Nam thành An Nam Cộng sản Đảng", "answer": "Sai"}]}, {"id": 40, "question": "Sắp xếp tên tác giả tương ứng với các văn kiện Đảng:", "type": "drag", "pairs": [["Cương lĩnh chính trị đầu tiên của Đảng (tháng 2/1930)", "Nguyễn Ái Quốc"], ["Chung quanh vấn đề chiến sách mới (tháng 10/1936)", "Ban Chấp hành Trung ương Đảng Cộng sản Đông Dương"], ["Cuốn “Tờrốtxky và phản cách mạng” (tháng 5/1937)", "Hà Huy Tập"], ["Luận cương chính trị (tháng 10/1930)", "Trần Phú"]]}, {"id": 41, "question": "Lựa chọn và điền cụm từ thích hợp vào chỗ trống để hoàn thiện nội dung phương hướng chiến lược của cách mạng được Đảng xác định trong Luận cương chính trị (tháng 10/1930):", "type": "fill", "prompt": "Tính chất của cách mạng Đông Dương lúc đầu là một cuộc _____ có tính chất _____. Sau đó sẽ tiếp tục phát triển, bỏ qua thời kỳ tư bổn mà tranh đấu thẳng lên con đường xã hội chủ nghĩa", "choices": ["Cách mạng dân tộc dân chủ nhân dân – thổ địa và phản đế", "Cách mạng tư sản dân quyền – độc lập dân tộc và phản đế", "Cách mạng dân tộc dân chủ nhân dân – độc lập dân tộc và phản đế", "Cách mạng tư sản dân quyền – thổ địa và phản đế"], "answerText": "Cách mạng tư sản dân quyền – thổ địa và phản đế"}, {"id": 42, "question": "Sắp xếp các mốc thời gian tương ứng với các sự kiện đã diễn ra:", "type": "drag", "pairs": [["Quốc tế Cộng sản họp Đại hội VII tại Mátxcơva (Liên Xô)", "Tháng 7/1935"], ["Khủng hoảng kinh tế thế giới", "Từ năm 1929 đến năm 1933"], ["Chính phủ Mặt trận nhân dân Pháp được thành lập", "Năm 1936"], ["Mặt trận nhân dân Pháp được thành lập", "Tháng 5/1935"]]}, {"id": 43, "question": "Lựa chọn và điền cụm từ thích hợp vào chỗ trống:", "type": "fillmulti", "prompt": "“Tháng 5/1941, Nguyễn Ái Quốc chủ trì Hội nghị lần thứ tám Ban Chấp hành Trung ương Đảng. Hội nghị khẳng định: ‘Vấn đề chính là nhận định cuộc cách mạng trước mắt của Việt Nam là ___(1)___, lập ___(2)___, khẩu hiệu chính là ___(3)___, chống Nhật, chống Pháp, tranh lại độc lập; ___(4)___.”", "choices": ["Một cuộc cách mạng giải phóng dân tộc", "Mặt trận Việt Minh", "Đoàn kết toàn dân", "Hoãn cách mạng ruộng đất"], "answers": ["Một cuộc cách mạng giải phóng dân tộc", "Mặt trận Việt Minh", "Đoàn kết toàn dân", "Hoãn cách mạng ruộng đất"], "blanks": [{"answer": "Một cuộc cách mạng giải phóng dân tộc"}, {"answer": "Mặt trận Việt Minh"}, {"answer": "Đoàn kết toàn dân"}, {"answer": "Hoãn cách mạng ruộng đất"}]}, {"id": 44, "question": "Kéo thả thời gian tương ứng với từng sự kiện dưới đây:", "type": "drag", "pairs": [["Mỹ ném bom nguyên tử xuống thành phố Hiroshima.", "Ngày 6/8/1945"], ["Mỹ ném bom nguyên tử xuống thành phố Nagasaki.", "Ngày 9/8/1945"], ["Chính phủ Nhật tuyên bố đầu hàng Đồng minh không điều kiện.", "Ngày 15/8/1945"], ["Ủy ban Khởi nghĩa toàn quốc ban bố “Quân lệnh số 1”, phát đi lệnh tổng khởi nghĩa trong cả nước.", "Ngày 13/8/1945"]]}];
+const QUESTIONS_B3 = [{"id": 1, "question": "Tình hình nước Việt Nam Dân chủ Cộng hòa sau Cách mạng tháng Tám năm 1945 được ví như:", "options": [{"key": "A", "text": "Nước sôi lửa nóng", "correct": false}, {"key": "B", "text": "Trứng nước", "correct": false}, {"key": "C", "text": "Ngàn cân treo sợi tóc", "correct": true}, {"key": "D", "text": "Nước sôi lửa bỏng", "correct": false}], "type": "single"}, {"id": 2, "question": "Những thuận lợi cơ bản của nước Việt Nam Dân chủ Cộng hòa sau Cách mạng tháng Tám năm 1945 là:", "options": [{"key": "A", "text": "Hệ thống chính quyền dày dặn kinh nghiệm quản lý", "correct": false}, {"key": "B", "text": "Kinh tế ổn định", "correct": false}, {"key": "C", "text": "Phong trào cách mạng trong nước phát triển mạnh mẽ", "correct": false}, {"key": "D", "text": "Việt Nam trở thành quốc gia độc lập tự do", "correct": true}], "type": "single"}, {"id": 3, "question": "Kẻ thù chính của Cách mạng Việt Nam được xác định trong Chỉ thị Kháng chiến kiến quốc ngày 25/11/1945 là:", "options": [{"key": "A", "text": "Giặc đói và giặc dốt", "correct": false}, {"key": "B", "text": "Thực dân Anh xâm lược", "correct": false}, {"key": "C", "text": "Thực dân Pháp xâm lược", "correct": true}, {"key": "D", "text": "Tưởng giới thạch và tay sai", "correct": false}], "type": "single"}, {"id": 4, "question": "Để củng cố chính quyền, Nhà nước Việt Nam tổ chức cuộc bầu cử toàn quốc lần đầu tiên vào năm nào?", "options": [{"key": "A", "text": "1946", "correct": true}, {"key": "B", "text": "1975", "correct": false}, {"key": "C", "text": "1954", "correct": false}, {"key": "D", "text": "1945", "correct": false}], "type": "single"}, {"id": 5, "question": "Những nhiệm vụ trước mắt được Đảng xác định trong bản Chỉ thị kháng chiến kiến quốc ngày 25/11/1945 là:", "options": [{"key": "A", "text": "Củng cố chính quyền, chống thực dân Pháp, bài trừ nội phản, cải thiện đời sống của nhân dân", "correct": true}, {"key": "B", "text": "Đánh đuổi quân Tưởng", "correct": false}, {"key": "C", "text": "Hòa hoãn với thực dân Pháp", "correct": false}, {"key": "D", "text": "Mở lớp học các cấp", "correct": false}], "type": "single"}, {"id": 6, "question": "Chọn câu trả lời đúng và đầy đủ nhất: Cách mạng Việt Nam giai đoạn từ 1945 - 1947 với nội dung cơ bản của đường lối kháng chiến là:", "options": [{"key": "A", "text": "Kháng chiến toàn dân", "correct": false}, {"key": "B", "text": "Dựa trên sức mạnh toàn dân, toàn diện, lâu dài và dựa vào sức mình là chính", "correct": true}, {"key": "C", "text": "Lâu dài, toàn diện", "correct": false}, {"key": "D", "text": "Kháng chiến trường kỳ", "correct": false}], "type": "single"}, {"id": 7, "question": "Tại Đại hội đại biểu toàn quốc lần thứ II (2/1951), Đảng ra hoạt động công khai và quyết định đổi tên thành:", "options": [{"key": "A", "text": "Đảng Cộng sản Đông Dương", "correct": false}, {"key": "B", "text": "Hội nghiên cứu Chủ nghĩa Mác - Lê nin", "correct": false}, {"key": "C", "text": "Đảng Cộng sản Việt Nam", "correct": false}, {"key": "D", "text": "Đảng Lao động Việt Nam", "correct": true}], "type": "single"}, {"id": 8, "question": "Ai đã được cử làm Tư lệnh kiêm Bí thư Đảng ủy chiến dịch Điện Biên Phủ?", "options": [{"key": "A", "text": "Võ Nguyên Giáp", "correct": true}, {"key": "B", "text": "Phạm Văn Đồng", "correct": false}, {"key": "C", "text": "Văn Tiến Dũng", "correct": false}, {"key": "D", "text": "Nguyễn Chí Thanh", "correct": false}], "type": "single"}, {"id": 9, "question": "Phương châm \"Đánh chắc, tiến chắc\" và \"đánh chắc thắng\" xuất hiện trong chiến dịch nào sau đây:", "options": [{"key": "A", "text": "Chiến dịch Biên giới", "correct": false}, {"key": "B", "text": "Chiến dịch Điện Biên Phủ", "correct": true}, {"key": "C", "text": "Chiến dịch Việt Bắc", "correct": false}, {"key": "D", "text": "Chiến dịch Hồ Chí Minh", "correct": false}], "type": "single"}, {"id": 10, "question": "Ngay sau khi chiến dịch Điện Biên Phủ kết thúc, Hội nghị quốc tế về chấm dứt chiến tranh ở Đông Dương đã diễn ra tại đâu:", "options": [{"key": "A", "text": "Pari", "correct": false}, {"key": "B", "text": "New York", "correct": false}, {"key": "C", "text": "Postdam", "correct": false}, {"key": "D", "text": "Giơnevơ", "correct": true}], "type": "single"}, {"id": 11, "question": "Nhiệm vụ chính của cách mạng Việt Nam giai đoạn 1951 - 1954 là đánh đuổi:", "options": [{"key": "A", "text": "Đế quốc Pháp xâm lược", "correct": true}, {"key": "B", "text": "Bọn phong kiến phản động", "correct": false}, {"key": "C", "text": "Giai cấp công nhân", "correct": false}, {"key": "D", "text": "Giai cấp tư sản", "correct": false}], "type": "single"}, {"id": 12, "question": "Chính cương của Đảng Lao động Việt Nam được thông qua tại Đại hội II (2/1951) đã xác định nền tảng của cách mạng là:", "options": [{"key": "A", "text": "Giai cấp nông dân, giai cấp tư sản, lao động trí óc", "correct": false}, {"key": "B", "text": "Giai cấp công nhân, giai cấp nông dân, lao động trí óc", "correct": true}, {"key": "C", "text": "Giai cấp công nhân, tầng lớp trí thức và phong kiến", "correct": false}, {"key": "D", "text": "Giai cấp nông dân, phong kiến và lao động trí óc", "correct": false}], "type": "single"}, {"id": 13, "question": "Miền Bắc bắt đầu tiến lên chủ nghĩa xã hội từ năm bao nhiêu?", "options": [{"key": "A", "text": "1954", "correct": true}, {"key": "B", "text": "1945", "correct": false}, {"key": "C", "text": "1975", "correct": false}, {"key": "D", "text": "1986", "correct": false}], "type": "single"}, {"id": 14, "question": "Trong giai đoạn hiện nay, để bảo vệ thành quả của các cuộc cách mạng, đất nước ta cần đặt dưới sự lãnh đạo của:", "options": [{"key": "A", "text": "Giai cấp nông dân", "correct": false}, {"key": "B", "text": "Giai cấp công nhân", "correct": false}, {"key": "C", "text": "Nhà nước xã hội chủ nghĩa", "correct": false}, {"key": "D", "text": "Đảng Cộng sản", "correct": true}], "type": "single"}, {"id": 15, "question": "Kết quả của cuộc kháng chiến chống thực dân Pháp và can thiệp Mỹ là:", "options": [{"key": "A", "text": "Thành lập Đảng Cộng sản Việt Nam", "correct": false}, {"key": "B", "text": "Giải phóng hoàn toàn miền Bắc", "correct": true}, {"key": "C", "text": "Giải phóng hoàn toàn miền Nam", "correct": false}, {"key": "D", "text": "Thành lập nhà nước Việt Nam dân chủ cộng hòa", "correct": false}], "type": "single"}, {"id": 16, "question": "Một trong những khó khăn, thách thức đối với nước Việt Nam Dân chủ Cộng Hòa sau Cách mạng tháng Tám năm 1945 là:", "options": [{"key": "A", "text": "Chủ nghĩa xã hội rơi vào khủng hoảng ở nhiều nước xã hội chủ nghĩa", "correct": false}, {"key": "B", "text": "Khoảng 95% dân số mù chữ", "correct": true}, {"key": "C", "text": "Tình trạng vi phạm pháp luật, vượt biên trái phép diễn ra phổ biến", "correct": false}, {"key": "D", "text": "Thực dân Pháp quay trở lại xâm lược miền Bắc Việt Nam", "correct": false}], "type": "single"}, {"id": 17, "question": "Chỉ thị Kháng chiến kiến quốc của Ban chấp hành Trung ương Đảng ra đời năm nào?", "options": [{"key": "A", "text": "1947", "correct": false}, {"key": "B", "text": "1945", "correct": true}, {"key": "C", "text": "1946", "correct": false}, {"key": "D", "text": "1948", "correct": false}], "type": "single"}, {"id": 18, "question": "Mục tiêu của cuộc cách mạng Đông Dương năm 1945 là:", "options": [{"key": "A", "text": "Xây dựng chủ nghĩa xã hội", "correct": false}, {"key": "B", "text": "Dân tộc giải phóng", "correct": true}, {"key": "C", "text": "Giải phóng giai cấp nông dân", "correct": false}, {"key": "D", "text": "Giải phóng dân cày", "correct": false}], "type": "single"}, {"id": 19, "question": "Sau 2/9/1945, nhiệm vụ lớn, quan trọng, cấp bách mà Đảng, Chính phủ và chủ tịch Hồ Chí Minh chỉ ra là (chọn nhiều đáp án): (Sinh viên chọn 2 phương án đúng nhất)", "options": [{"key": "A", "text": "Chống giặc nội phản", "correct": true}, {"key": "B", "text": "Chống đế quốc Mỹ", "correct": false}, {"key": "C", "text": "Chống lại phong kiến, phản động", "correct": false}, {"key": "D", "text": "Chống giặc đói, đẩy lùi nạn đói", "correct": true}], "type": "multi"}, {"id": 20, "question": "Chính cương của Đảng Lao động Việt Nam được thông qua tại Đại hội II (2/1951) đã xác định xã hội Việt Nam gồm 3 tính chất, đó là:", "options": [{"key": "A", "text": "Thuộc địa, dân chủ, xã hội chủ nghĩa", "correct": false}, {"key": "B", "text": "Dân tộc, dân chủ, xã hội chủ nghĩa", "correct": false}, {"key": "C", "text": "Dân chủ nhân dân, một phần thuộc địa và nửa phong kiến", "correct": true}, {"key": "D", "text": "Phong kiến, dân tộc, dân chủ", "correct": false}], "type": "single"}, {"id": 21, "question": "Cuộc chiến đấu mở đầu cho cuộc kháng chiến chống Pháp của quân và dân ta tại Hà Nội diễn ra trong bao nhiêu ngày?", "options": [{"key": "A", "text": "60 ngày đêm", "correct": true}, {"key": "B", "text": "30 ngày đêm", "correct": false}, {"key": "C", "text": "90 ngày đêm", "correct": false}, {"key": "D", "text": "12 ngày đêm", "correct": false}], "type": "single"}, {"id": 22, "question": "Chính cương của Đảng Lao động Việt Nam được thông qua tại Đại hội II (2/1951) đã xác định động lực của cách mạng gồm 4 giai cấp, tầng lớp đó là:", "options": [{"key": "A", "text": "Nông dân, tư sản, tiểu tư sản, địa chủ phong kiến", "correct": false}, {"key": "B", "text": "Công nhân, trí thức, địa chủ phong kiến, tư sản", "correct": false}, {"key": "C", "text": "Công nhân, nông dân, trí thức, địa chủ phong kiến", "correct": false}, {"key": "D", "text": "Công nhân, nông dân, tiểu tư sản, tư sản dân tộc", "correct": true}], "type": "single"}, {"id": 23, "question": "Bài học kinh nghiệm nào của Đảng trong lãnh đạo kháng chiến chống thực dân Pháp xâm lược có thể được áp dụng cho cách mạng Việt Nam trong giai đoạn hiện nay?", "options": [{"key": "A", "text": "Phải luôn thực hiện kháng chiến trường kỳ", "correct": false}, {"key": "B", "text": "Đề ra đường lối đúng đắn, sáng tạo, phù hợp với thực tiễn lịch sử của cuộc kháng chiến ngay từ những ngày đầu", "correct": true}, {"key": "C", "text": "Cần có tầng lớp trí thức lãnh đạo cách mạng", "correct": false}, {"key": "D", "text": "Cần có giai cấp nông dân lên lãnh đạo", "correct": false}], "type": "single"}, {"id": 24, "question": "Đại hội đại biểu toàn quốc lần thứ II (2/1951), đã thông qua bản Chính cương của Đảng lao động Việt Nam do ai soạn thảo:", "options": [{"key": "A", "text": "Chủ tịch Hồ Chí Minh", "correct": false}, {"key": "B", "text": "Võ Nguyên Giáp", "correct": false}, {"key": "C", "text": "Lê Duẩn", "correct": false}, {"key": "D", "text": "Trường Chinh", "correct": true}], "type": "single"}, {"id": 25, "question": "Cuộc kháng chiến chống Pháp giai đoạn 1951 - 1954 nhằm giải quyết mâu thuẫn:", "options": [{"key": "A", "text": "Nhân dân Việt Nam với giai cấp tư sản", "correct": false}, {"key": "B", "text": "Nhân dân Việt Nam với chủ nghĩa đế quốc xâm lược", "correct": true}, {"key": "C", "text": "Giai cấp công nhân với giai cấp nông dân", "correct": false}, {"key": "D", "text": "Giai cấp công nhân với giai cấp tư sản", "correct": false}], "type": "single"}, {"id": 26, "question": "Chọn câu trả lời đúng và đầy đủ nhất: Năm 1945, Chính phủ lâm thời họp phiên đầu tiên dưới sự chủ trì của chủ tịch Hồ Chí Minh xác định nhiệm vụ trước mắt là:", "options": [{"key": "A", "text": "Diệt giặc dốt", "correct": false}, {"key": "B", "text": "Diệt giặc đói, diệt giặc dốt, diệt giặc ngoại xâm", "correct": true}, {"key": "C", "text": "Diệt giặc đói", "correct": false}, {"key": "D", "text": "Diệt giặc ngoại xâm", "correct": false}], "type": "single"}, {"id": 27, "question": "Bài học kinh nghiệm nào của Đảng trong lãnh đạo kháng chiến chống thực dân Pháp xâm lược có thể được áp dụng cho cách mạng Việt Nam trong giai đoạn hiện nay", "options": [{"key": "A", "text": "Luôn coi trọng công tác xây dựng, chỉnh đốn Đảng", "correct": true}, {"key": "B", "text": "Luôn đề cao vai trò lãnh đạo của Nhà nước", "correct": false}, {"key": "C", "text": "Luôn phát triển giai cấp nông dân đông đảo nhất trong xã hội", "correct": false}, {"key": "D", "text": "Luôn đề cao vai trò lãnh đạo của giai cấp công nhân", "correct": false}], "type": "single"}, {"id": 28, "question": "Cuộc cách mạng nào đã đưa Việt Nam bước sang kỷ nguyên mới – Kỷ nguyên độc lập dân tộc gắn liền với chủ nghĩa xã hội?", "options": [{"key": "A", "text": "Cách mạng tháng Tám", "correct": true}, {"key": "B", "text": "Cách mạng Xô viết Nghệ Tĩnh", "correct": false}, {"key": "C", "text": "Cách mạng giải phóng miền Nam", "correct": false}, {"key": "D", "text": "Chiến dịch Điện Biên Phủ", "correct": false}], "type": "single"}, {"id": 29, "question": "Vận dụng kiến thức đã được học, em hãy cho biết chiến dịch nào đã đưa cuộc kháng chiến chống thực dân Pháp của nhân dân ta từ thế bị động chuyển sang thế chủ động trên chiến trường:", "options": [{"key": "A", "text": "Chiến dịch Điện Biên Phủ", "correct": false}, {"key": "B", "text": "Chiến dịch Quang Trung", "correct": false}, {"key": "C", "text": "Chiến dịch Biên Giới", "correct": true}, {"key": "D", "text": "Chiến dịch Việt Bắc", "correct": false}], "type": "single"}, {"id": 30, "question": "Hiệp ước Trùng Khánh (Hiệp ước Hoa – Pháp) ký ngày 28/2/1946 có nội dung gì tác động đến cách mạng Việt Nam?", "options": [{"key": "A", "text": "Đưa quân đội Pháp vào xâm chiếm Việt Nam", "correct": false}, {"key": "B", "text": "Quân Pháp đưa quân đội ra Bắc vĩ tuyến 16 thay thế cho quân Tưởng làm nhiệm vụ giải giáp quân đội Nhật", "correct": true}, {"key": "C", "text": "Quân Tưởng cho 20.000 quân vào giải giáp quân đội Nhật từ vĩ tuyến 16 trở vào Nam", "correct": false}, {"key": "D", "text": "Quân Tưởng và quân Pháp cùng thực hiện nhiệm vụ giải giáp quân đội Nhật", "correct": false}], "type": "single"}, {"id": 31, "question": "Tình hình Việt Nam sau Cách mạng Tháng Tám năm 1945 là (Chọn 2 đáp án đúng): (Sinh viên chọn 2 phương án đúng nhất)", "options": [{"key": "A", "text": "Nền văn hóa xã hội ngày càng ổn định và phát triển", "correct": false}, {"key": "B", "text": "Hệ thống chính quyền mới được thiết lập, còn rất non trẻ, thiếu thốn, yếu kém về nhiều mặt", "correct": true}, {"key": "C", "text": "Việt Nam trở thành quốc gia độc lập, tự do", "correct": true}, {"key": "D", "text": "Kinh tế phát triển về mọi mặt", "correct": false}], "type": "multi"}, {"id": 32, "question": "Những khó khăn của Việt Nam sau Cách mạng Tháng Tám năm 1945 là: (Chọn 2 đáp án đúng) (Sinh viên chọn 2 phương án đúng nhất)", "options": [{"key": "A", "text": "Các nước trên thế giới hầu hết công nhận sự tồn tại của Nhà nước Việt Nam dân chủ cộng hòa", "correct": false}, {"key": "B", "text": "Không có nước nào ủng hộ lập trường độc lập và công nhận pháp lý của Nhà nước Việt Nam dân chủ cộng hòa", "correct": true}, {"key": "C", "text": "Hệ thống chính quyền mới được thiết lập, còn rất non trẻ, thiếu thốn, yếu kém về nhiều mặt", "correct": true}, {"key": "D", "text": "Việt Nam nhận được sự viện trợ và giúp đỡ của bạn bè trên thế giới", "correct": false}], "type": "multi"}, {"id": 33, "question": "Kéo thả đáp án đúng vào cột dưới đây:", "type": "drag", "pairs": [["Phát động phong trào Bình dân học vụ", "1) Chống giặc dốt, xóa nạn mù chữ"], ["Toàn dân xây dựng nếp sống mới, đời sống văn hóa mới để đẩy lùi các tệ nạn hủ tục, thói quen cũ", "1) Chống giặc dốt, xóa nạn mù chữ"], ["Tăng gia sản xuất ngay", "2) Chống giặc đói, đẩy lùi nạn đói"], ["Lập hũ gạo tiết kiệm", "2) Chống giặc đói, đẩy lùi nạn đói"]]}, {"id": 34, "question": "Tìm ra đáp án ĐÚNG/SAI trong các nhận định về mục tiêu của cuộc kháng chiến giai đoạn 1945–1946 mà Đảng ta xác định:", "type": "tf", "statements": [{"text": "Đánh đổ thực dân Pháp xâm lược, giành nền độc lập, tự do, thống nhất hoàn toàn", "answer": "Đúng"}, {"text": "Xây dựng nền kinh tế xã hội chủ nghĩa", "answer": "Sai"}, {"text": "Xây dựng chế độ Tư bản chủ nghĩa", "answer": "Sai"}, {"text": "Vì nền tự do dân chủ và góp phần bảo vệ hòa bình thế giới", "answer": "Đúng"}]}, {"id": 35, "question": "Kéo thả đáp án đúng vào cột dưới đây:", "type": "drag", "pairs": [["Đem toàn bộ sức dân, tài dân, lực dân", "1) Kháng chiến toàn dân"], ["Động viên toàn dân tích cực tham gia kháng chiến", "1) Kháng chiến toàn dân"], ["Đánh địch trên mọi lĩnh vực không chỉ bằng quân sự mà cả chính trị, kinh tế, văn hóa, tư tưởng, ngoại giao", "2) Kháng chiến toàn diện"], ["Động viên và phát huy mọi tiềm năng, sức mạnh của dân tộc, mọi nguồn lực vật chất và tinh thần", "2) Kháng chiến toàn diện"]]}, {"id": 36, "question": "Xác định đáp án ĐÚNG/SAI trong các nhận định sau về nội dung: Năm 1945 chính phủ lâm thời họp phiên đầu tiên dưới sự chủ trì của Chủ tịch Hồ Chí Minh đã xác định nhiệm vụ trước mắt là:", "type": "tf", "statements": [{"text": "Diệt giặc đói, diệt giặc dốt và diệt giặc ngoại xâm.", "answer": "Đúng"}, {"text": "Tiêu diệt đế quốc Mỹ xâm lược.", "answer": "Sai"}, {"text": "Thực hiện xây dựng xây dựng đất nước theo chủ nghĩa tư bản.", "answer": "Sai"}, {"text": "Khẩn trương xây dựng một xã hội dân giàu nước mạnh, dân chủ, công bằng, văn minh.", "answer": "Sai"}]}, {"id": 37, "question": "Tìm ra đáp án ĐÚNG/SAI trong nội dung Chỉ thị Kháng chiến kiến quốc năm 1945 của Ban chấp hành trung ương Đảng:", "type": "tf", "statements": [{"text": "Củng cố và xây dựng Nhà nước phong kiến", "answer": "Sai"}, {"text": "Xóa bỏ cơ chế tập trung quan liêu, bao cấp", "answer": "Sai"}, {"text": "Chống giặc đói, đẩy lùi nạn đói là nhiệm vụ lớn, quan trọng, cấp bách lúc bấy giờ", "answer": "Đúng"}, {"text": "Khẩn trương xây dựng, củng cố chính quyền cách mạng", "answer": "Đúng"}]}, {"id": 38, "question": "Tìm ra đáp án ĐÚNG/SAI về những thuận lợi của Việt Nam sau cách mạng Tháng Tám năm 1945:", "type": "tf", "statements": [{"text": "Hệ thống chính quyền cách mạng mới được thiết lập, còn rất non trẻ, thiếu thốn, yếu kém về nhiều mặt.", "answer": "Sai"}, {"text": "Đảng Cộng sản trở thành Đảng cầm quyền lãnh đạo cách mạng trong cả nước.", "answer": "Đúng"}, {"text": "Các hủ tục lạc hậu, thói hư, tật xấu, tệ nạn xã hội chưa được khắc phục.", "answer": "Sai"}, {"text": "Hình thành hệ thống chính quyền cách mạng với bộ máy thống nhất từ cấp trung ương đến cơ sở, ra sức phục vụ lợi ích của Tổ quốc, nhân dân.", "answer": "Đúng"}]}, {"id": 39, "question": "Tìm ra đáp án ĐÚNG/SAI trong nội dung đường lối kháng chiến chống thực dân Pháp:", "type": "tf", "statements": [{"text": "Kêu gọi tất cả các giai cấp tham gia vào cuộc kháng chiến.", "answer": "Sai"}, {"text": "Chỉ tiến hành kháng chiến trên lĩnh vực văn hóa.", "answer": "Sai"}, {"text": "Kháng chiến dựa vào sức mình là chính.", "answer": "Đúng"}, {"text": "Tiến hành kháng chiến toàn dân, toàn diện lâu dài.", "answer": "Đúng"}]}, {"id": 40, "question": "Kéo thả đáp án đúng vào cột dưới đây:", "type": "drag", "pairs": [["Lấy thời gian là lực lượng vật chất chuyển hóa yếu thành mạnh", "1. Kháng chiến lâu dài"], ["Tranh thủ chớp thời cơ thúc đẩy cuộc kháng chiến có bước nhảy vọt về chất", "1. Kháng chiến lâu dài"], ["Đem toàn bộ sức dân, tài dân, lực dân", "2. Kháng chiến toàn dân"], ["Động viên toàn dân tích cực tham gia kháng chiến", "2. Kháng chiến toàn dân"]]}];
+const LESSON_QUESTIONS = {1: QUESTIONS, 2: QUESTIONS_B2, 3: QUESTIONS_B3};
+let currentLesson = 1;
+
+let mode = "practice";
+let current = 0;
+let score = 0;
+let streak = 0;
+let bestStreak = 0;
+let correctCount = 0;
+let wrongCount = 0;
+let timer = null;
+let timeLeft = 30;
+let locked = false;
+let soundOn = true;
+let selected = new Set();
+let dragAnswers = {};
+let fillAnswer = "";
+let userAnswers = [];
+let shuffled = [];
+let selectedTime = 30;
+let shuffleQuestions = false;
+let shuffleAnswers = true;
+
+const TIME_PRESETS = [10,15,20,30,45,60,90,120,180,300];
+
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
+
+function renderLessons(){
+  const grid=document.getElementById("lessonGrid");
+  grid.innerHTML="";
+  const info={
+    1:["Cơ sở hình thành Đảng Cộng sản Việt Nam","42 câu · Trắc nghiệm · Kéo thả · Điền từ"],
+    2:["Đảng lãnh đạo đấu tranh giành chính quyền (1930–1945)","44 câu · Trắc nghiệm · Nhiều đáp án · Đúng/Sai · Kéo thả · Điền từ"],
+    3:["Kháng chiến chống thực dân Pháp (1945–1954)","40 câu · Trắc nghiệm · Nhiều đáp án · Đúng/Sai · Kéo thả"],
+    4:["Chưa mở","Sẽ bổ sung sau khi học xong bài này."],
+    5:["Chưa mở","Sẽ bổ sung sau khi học xong bài này."],
+    6:["Chưa mở","Sẽ bổ sung sau khi học xong bài này."]
+  };
+  for(let i=1;i<=6;i++){
+    const available=!!LESSON_QUESTIONS[i];
+    const div=document.createElement("div");
+    div.className="lesson "+(available?"active":"disabled");
+    div.innerHTML=`<div class="lesson-number">BÀI ${i}</div>
+      <h3>${info[i][0]}</h3>
+      <p>${info[i][1]}</p>`;
+    if(available) div.onclick=()=>selectLesson(i);
+    grid.appendChild(div);
+  }
+}
+function selectLesson(n){
+  if(!LESSON_QUESTIONS[n]) return;
+  currentLesson=n;
+  document.getElementById("setupTitle").textContent=`Thiết lập Bài ${n}`;
+  document.getElementById("setupOverlay").style.display="flex";
+  chooseMode("practice");
+  renderTimeChoices();
+}
+renderLessons();
+
+function showIntro(){
+  alert("Web ôn tập Lịch sử Đảng. Hiện đã có Bài 1, Bài 2 và Bài 3.");
+}
+
+function toggleSound(){
+  soundOn=!soundOn;
+  document.getElementById("soundBtn").textContent=soundOn?"🔊 Âm thanh":"🔇 Tắt âm thanh";
+}
+
+function tone(freq,duration,type="sine"){
+  if(!soundOn) return;
+  try{
+    const AC=window.AudioContext||window.webkitAudioContext;
+    const ctx=new AC(), osc=ctx.createOscillator(), gain=ctx.createGain();
+    osc.type=type; osc.frequency.value=freq;
+    gain.gain.setValueAtTime(.0001,ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(.12,ctx.currentTime+.02);
+    gain.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+duration);
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(); osc.stop(ctx.currentTime+duration+.03);
+  }catch(e){}
+}
+function soundCorrect(){tone(720,.12);setTimeout(()=>tone(980,.14),90)}
+function soundWrong(){tone(230,.22,"sawtooth")}
+function soundTick(){tone(420,.05)}
+function soundFinish(){tone(620,.12);setTimeout(()=>tone(820,.12),120);setTimeout(()=>tone(1100,.2),240)}
+
+function openSetup(preferredMode="practice"){
+  document.getElementById("setupTitle").textContent=`Thiết lập Bài ${currentLesson}`;
+  document.getElementById("setupOverlay").style.display="flex";
+  chooseMode(preferredMode);
+  renderTimeChoices();
+}
+function closeSetup(){document.getElementById("setupOverlay").style.display="none";}
+function chooseMode(v){
+  mode=v;
+  document.getElementById("modePractice").classList.toggle("active",v==="practice");
+  document.getElementById("modeExam").classList.toggle("active",v==="exam");
+}
+function renderTimeChoices(){
+  document.getElementById("timeGrid").innerHTML=TIME_PRESETS.map(t=>`<button class="setting-option time-option ${selectedTime===t?"active":""}" onclick="chooseTime(${t})">${t}s</button>`).join("");
+}
+function chooseTime(t){
+  if(!Number.isFinite(t) || t<5 || t>600)return;
+  selectedTime=Math.round(t);
+  document.getElementById("customTime").value="";
+  renderTimeChoices();
+}
+function toggleSetting(id){
+  if(id==="shuffleQuestions") shuffleQuestions=!shuffleQuestions;
+  if(id==="shuffleAnswers") shuffleAnswers=!shuffleAnswers;
+  document.getElementById(id).classList.toggle("on",id==="shuffleQuestions"?shuffleQuestions:shuffleAnswers);
+}
+function shuffleArray(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+function startConfiguredQuiz(){
+  closeSetup();
+  startQuiz(mode);
+}
+function startQuiz(selectedMode){
+  mode=selectedMode; current=0; score=0; streak=0; bestStreak=0;
+  correctCount=0; wrongCount=0; userAnswers=[]; locked=false;
+  const sourceQuestions=LESSON_QUESTIONS[currentLesson]||QUESTIONS;
+  shuffled=shuffleQuestions?shuffleArray(sourceQuestions):[...sourceQuestions];
+  if(shuffleAnswers){
+    shuffled=shuffled.map(q=>({...q,options:q.options&&q.options.length?shuffleArray(q.options):q.options}));
+  }else{
+    shuffled=shuffled.map(q=>({...q,options:q.options?[...q.options]:q.options}));
+  }
+  document.getElementById("home").style.display="none";
+  document.getElementById("result").style.display="none";
+  document.getElementById("quizShell").style.display="block";
+  document.getElementById("modeLabel").textContent=mode==="exam"?"Thi thử":"Luyện tập";
+  renderQuestion();
+}
+
+function renderQuestion(){
+  clearInterval(timer);
+  locked=false; selected=new Set(); dragAnswers={}; fillAnswer=""; window.tfAnswer={}; window.fmAnswer=[];
+  const q=shuffled[current];
+  document.getElementById("qCounter").textContent=`Câu ${current+1}/${shuffled.length}`;
+  document.getElementById("score").textContent=score;
+  document.getElementById("streak").textContent=streak;
+  document.getElementById("progressFill").style.width=`${((current)/shuffled.length)*100}%`;
+
+  const card=document.getElementById("questionCard");
+  let typeText=q.type==="single"?"Chọn một đáp án":q.type==="multi"?"Chọn nhiều đáp án":q.type==="drag"?"Kéo thả":q.type==="tf"?"Đúng / Sai":q.type==="fillmulti"?"Điền từ":"Điền từ";
+
+  let html=`<span class="q-type">${typeText}</span>
+    <div class="question">${esc(q.question)}</div>`;
+
+  if(q.type==="drag"){
+    html+=renderDrag(q);
+  }else if(q.type==="fillmulti"){
+    html+=renderFillMulti(q);
+  }else if(q.type==="tf"){
+    html+=renderTF(q);
+  }else if(q.type==="fill"){
+    html+=renderFill(q);
+  }else{
+    const need=q.options.filter(o=>o.correct).length;
+    if(need>1) html+=`<div class="helper">Chọn đúng ${need} đáp án rồi bấm “Kiểm tra”.</div>`;
+    html+=`<div class="options">`;
+    q.options.forEach(o=>{
+      html+=`<button class="option" id="opt-${o.key}" onclick="selectOption('${o.key}')">
+        <span class="letter">${o.key}</span>${esc(o.text)}
+      </button>`;
+    });
+    html+=`</div>`;
+  }
+
+  html+=`<div class="feedback" id="feedback"></div>
+    <div class="actions">
+      <div class="action-left">
+        <div class="timer" id="timer">⏱ <span>${timeLeft}</span>s</div>
+      </div>
+      <div>
+        ${q.type==="single" && q.options.filter(o=>o.correct).length===1
+          ? `<span style="color:#7b86a0;font-size:13px">Chọn đáp án để tự chuyển câu</span>`
+          : `<button class="check-btn" id="checkBtn" onclick="checkCurrent()" disabled>Kiểm tra</button>`}
+      </div>
+    </div>`;
+  card.innerHTML=html;
+
+  if(q.type==="drag") setupDrag();
+  startTimer();
+}
+
+function renderDrag(q){
+  // Đúng theo dạng bảng trong tài liệu: người học lấy từng đáp án ở ngân hàng
+  // rồi kéo vào đúng CỘT/nhóm tương ứng. Mỗi cột có thể nhận nhiều đáp án.
+  const categories=[];
+  q.pairs.forEach(pair=>{
+    if(!categories.includes(pair[1])) categories.push(pair[1]);
+  });
+
+  const shuffledItems=[...q.pairs]
+    .map((pair, originalIndex)=>({pair, originalIndex}))
+    .sort(()=>Math.random()-.5);
+
+  const items=shuffledItems.map(({pair, originalIndex})=>`
+    <div class="drag-item"
+         draggable="true"
+         data-id="${originalIndex}"
+         data-text="${esc(pair[0])}">
+      ${esc(pair[0])}
+    </div>`).join("");
+
+  const zones=categories.map((category, i)=>`
+    <div class="dropzone drag-column" data-category="${esc(category)}">
+      <h4>${i+1}) ${esc(category)}</h4>
+      <div class="drop-target column-target" data-category="${esc(category)}">
+        <span class="drop-placeholder">Kéo đáp án vào cột này</span>
+      </div>
+    </div>`).join("");
+
+  return `
+    <div class="helper">Lấy đáp án ở phần bên dưới và kéo vào đúng cột tương ứng.</div>
+    <div class="drag-grid">${zones}</div>
+    <div class="drag-bank">
+      <div class="drag-bank-title">Đáp án để kéo</div>
+      <div class="drag-items" id="dragItems">${items}</div>
+    </div>`;
+}
+
+function bindDragItem(el){
+  el.addEventListener("dragstart",e=>{
+    if(locked){ e.preventDefault(); return; }
+    e.dataTransfer.effectAllowed="move";
+    e.dataTransfer.setData("text/plain", el.dataset.id);
+    e.dataTransfer.setData("answerText", el.dataset.text || el.textContent.trim());
+    el.classList.add("dragging");
+  });
+  el.addEventListener("dragend",()=>el.classList.remove("dragging"));
+}
+
+function setupDrag(){
+  document.querySelectorAll(".drag-item").forEach(bindDragItem);
+
+  document.querySelectorAll(".drop-target").forEach(zone=>{
+    zone.addEventListener("dragover",e=>{
+      e.preventDefault();
+      if(locked)return;
+      e.dataTransfer.dropEffect="move";
+      zone.classList.add("drag-over");
+    });
+    zone.addEventListener("dragleave",()=>zone.classList.remove("drag-over"));
+    zone.addEventListener("drop",e=>{
+      e.preventDefault();
+      zone.classList.remove("drag-over");
+      if(locked)return;
+
+      const id=e.dataTransfer.getData("text/plain");
+      const answerText=e.dataTransfer.getData("answerText");
+      if(id==="" || answerText==="")return;
+
+      // Tìm đáp án đang được kéo (có thể đang ở ngân hàng hoặc cột khác).
+      const source=document.querySelector(`.drag-item[data-id="${CSS.escape(id)}"]`);
+      if(!source)return;
+
+      // Không cho một đáp án xuất hiện đồng thời ở nhiều cột.
+      document.querySelectorAll(`.drop-target .drag-item[data-id="${CSS.escape(id)}"]`).forEach(el=>el.remove());
+
+      source.remove();
+
+      // Tạo lại đáp án ngay trong cột đích.
+      const placed=document.createElement("div");
+      placed.className="drag-item placed-answer";
+      placed.draggable=true;
+      placed.dataset.id=id;
+      placed.dataset.text=answerText;
+      placed.textContent=answerText;
+      bindDragItem(placed);
+
+      const placeholder=zone.querySelector(".drop-placeholder");
+      if(placeholder) placeholder.remove();
+      zone.appendChild(placed);
+      zone.classList.add("filled");
+      updateCheck();
+    });
+  });
+}
+
+function clearDropTarget(zone, returnToBank=true){
+  const placed=[...zone.querySelectorAll(".drag-item")];
+  placed.forEach(el=>{
+    const id=el.dataset.id, text=el.dataset.text;
+    el.remove();
+    if(returnToBank && id && text)addDragItemBack(id,text);
+  });
+  zone.classList.remove("filled");
+  if(!zone.querySelector(".drop-placeholder")){
+    zone.innerHTML=`<span class="drop-placeholder">Kéo đáp án vào cột này</span>`;
+  }
+}
+
+function addDragItemBack(id,text){
+  const bank=document.getElementById("dragItems");
+  if(!bank || !id || !text)return;
+  if(bank.querySelector(`.drag-item[data-id="${CSS.escape(id)}"]`))return;
+
+  const el=document.createElement("div");
+  el.className="drag-item";
+  el.draggable=true;
+  el.dataset.id=id;
+  el.dataset.text=text;
+  el.textContent=text;
+  bindDragItem(el);
+  bank.appendChild(el);
+}
+
+function renderTF(q){
+  return `<div class="helper">Chọn Đúng hoặc Sai cho từng nhận định.</div>
+    <div class="tf-list">${q.statements.map((st,i)=>`
+      <div class="tf-row" data-index="${i}"><div class="tf-text">${esc(st.text)}</div>
+        <button class="tf-btn" data-val="Đúng" onclick="chooseTF(${i},'Đúng')">Đúng</button>
+        <button class="tf-btn" data-val="Sai" onclick="chooseTF(${i},'Sai')">Sai</button>
+      </div>`).join('')}</div>`;
+}
+function chooseTF(i,v){
+  if(locked)return;
+  if(!window.tfAnswer) window.tfAnswer={};
+  window.tfAnswer[i]=v;
+  const row=document.querySelector(`.tf-row[data-index="${i}"]`);
+  if(row) row.querySelectorAll('.tf-btn').forEach(b=>b.classList.toggle('selected',b.dataset.val===v));
+  updateCheck();
+}
+function renderFillMulti(q){
+  const blanks=q.answers.map((a,i)=>`<button class="blank fm-blank" data-index="${i}" onclick="clearFillMulti(${i})">(${i+1}) Chưa chọn</button>`).join('');
+  return `<div class="helper">Chọn từng cụm từ để điền vào các chỗ trống theo thứ tự.</div>
+    <div class="fillmulti-prompt">${esc(q.prompt)}</div>
+    <div class="fm-blanks">${blanks}</div>
+    <div class="wordbank">${q.choices.map((w,i)=>`<button class="word" data-word-index="${i}" onclick="chooseFillMulti(${i})">${esc(w)}</button>`).join('')}</div>`;
+}
+function chooseFillMulti(i){
+  if(locked)return;
+  if(!window.fmAnswer) window.fmAnswer=[];
+  const word=shuffled[current].choices[i];
+  let idx=window.fmAnswer.findIndex(v=>!v);
+  if(idx<0) idx=window.fmAnswer.length;
+  if(idx>=shuffled[current].answers.length)return;
+  window.fmAnswer[idx]=word;
+  document.querySelectorAll('.fm-blank').forEach((b,j)=>{b.textContent=window.fmAnswer[j] ? `(${j+1}) ${window.fmAnswer[j]}` : `(${j+1}) Chưa chọn`;});
+  updateCheck();
+}
+function clearFillMulti(i){
+  if(locked)return;
+  if(!window.fmAnswer)return;
+  window.fmAnswer[i]='';
+  document.querySelectorAll('.fm-blank').forEach((b,j)=>{b.textContent=window.fmAnswer[j] ? `(${j+1}) ${window.fmAnswer[j]}` : `(${j+1}) Chưa chọn`;});
+  updateCheck();
+}
+function renderFill(q){
+  const words=q.choices || (q.id===41
+    ? ["đế quốc Mỹ","chủ nghĩa tư bản","thực dân Pháp","chủ nghĩa đế quốc","đế quốc chủ nghĩa Pháp"]
+    : ["nông dân","tư sản","công nhân","trí thức","Vô sản"]);
+
+  return `<div class="helper">Chọn một đáp án để điền vào chỗ trống.</div>
+    <div class="fillbox"><span>Đáp án:</span><div class="blank" id="blank">Chưa chọn</div></div>
+    <div class="wordbank">${words.map(w=>`<button class="word" onclick="chooseFill('${esc(w)}')">${esc(w)}</button>`).join("")}</div>`;
+}
+
+function chooseFill(v){
+  if(locked)return;
+  fillAnswer=v;
+  document.getElementById("blank").textContent=v;
+  updateCheck();
+}
+
+function selectOption(key){
+  if(locked)return;
+  const q=shuffled[current];
+  const multi=q.options.filter(o=>o.correct).length>1;
+  if(multi){
+    if(selected.has(key)) selected.delete(key); else selected.add(key);
+    q.options.forEach(o=>{
+      const el=document.getElementById("opt-"+o.key);
+      if(el) el.classList.toggle("selected",selected.has(o.key));
+    });
+    updateCheck();
+    const need=q.options.filter(o=>o.correct).length;
+    if(selected.size===need) setTimeout(()=>checkCurrent(),260);
+  }else{
+    selected=new Set([key]);
+    q.options.forEach(o=>{
+      const el=document.getElementById("opt-"+o.key);
+      if(el) el.classList.remove("selected");
+    });
+    document.getElementById("opt-"+key).classList.add("selected");
+    setTimeout(()=>checkCurrent(),260);
+  }
+}
+
+function updateCheck(){
+  const btn=document.getElementById("checkBtn");
+  if(!btn)return;
+  const q=shuffled[current];
+  let ready=false;
+  if(q.type==="multi") ready=selected.size>0;
+  if(q.type==="drag"){
+    const allPlaced=document.querySelectorAll(".drop-target .placed-answer").length===q.pairs.length;
+    ready=allPlaced;
+  }
+  if(q.type==="fill") ready=fillAnswer!=="";
+  if(q.type==="fillmulti") ready=(window.fmAnswer||[]).length===q.answers.length && q.answers.every((_,i)=>String(window.fmAnswer[i]||'').trim()!=="");
+  if(q.type==="tf") ready=Object.keys(window.tfAnswer||{}).length===q.statements.length;
+  btn.disabled=!ready;
+}
+
+function startTimer(){
+  timeLeft=selectedTime;
+  const el=document.getElementById("timer");
+  el.innerHTML=`⏱ <span>${timeLeft}</span>s`;
+  el.classList.remove("danger");
+  timer=setInterval(()=>{
+    if(locked)return;
+    timeLeft--;
+    const t=document.getElementById("timer");
+    if(!t)return;
+    t.querySelector("span").textContent=timeLeft;
+    if(timeLeft<=5)t.classList.add("danger");
+    if(timeLeft<=5 && timeLeft>0)soundTick();
+    if(timeLeft<=0){
+      clearInterval(timer); soundWrong(); handleResult(false,true);
+    }
+  },1000);
+}
+
+function getCorrectKeys(q){
+  return q.options.filter(o=>o.correct).map(o=>o.key);
+}
+
+function checkCurrent(){
+  if(locked)return;
+  const q=shuffled[current];
+  let isCorrect=false;
+
+  if(q.type==="single" || q.type==="multi"){
+    const chosen=[...selected].sort();
+    const correct=getCorrectKeys(q).sort();
+    isCorrect=chosen.length===correct.length && chosen.every((v,i)=>v===correct[i]);
+  }else if(q.type==="fill"){
+    isCorrect = fillAnswer.trim()===String(q.answerText).trim();
+  }else if(q.type==="fillmulti"){
+    isCorrect = (window.fmAnswer||[]).length===q.answers.length && q.answers.every((a,i)=>String(window.fmAnswer[i]||'').trim()===String(a).trim());
+  }else if(q.type==="tf"){
+    isCorrect = q.statements.every((st,i)=>window.tfAnswer[i]===st.answer);
+  }else if(q.type==="drag"){
+    isCorrect=true;
+    const categoryOfPair=q.pairs.map(pair=>pair[1]);
+    document.querySelectorAll(".drop-target").forEach(zone=>{
+      const category=zone.dataset.category;
+      zone.querySelectorAll(".placed-answer").forEach(item=>{
+        const id=Number(item.dataset.id);
+        if(categoryOfPair[id]!==category) isCorrect=false;
+      });
+    });
+    if(document.querySelectorAll(".drop-target .placed-answer").length!==q.pairs.length) isCorrect=false;
+  }
+
+  handleResult(isCorrect,false);
+}
+
+function handleResult(isCorrect,timeout){
+  locked=true; clearInterval(timer);
+  const q=shuffled[current];
+  userAnswers[current]={question:q,user:isCorrect?"Đúng":"Sai"};
+
+  if(isCorrect){
+    correctCount++; streak++; bestStreak=Math.max(bestStreak,streak);
+    score += 100 + Math.max(0,streak-1)*10 + Math.max(0,timeLeft)*2;
+    soundCorrect();
+    showFeedback("✓ Chính xác!","ok");
+    if(streak>=2) showStreak();
+  }else{
+    wrongCount++; streak=0;
+    soundWrong();
+    showFeedback(timeout?"⏰ Hết giờ!":"✗ Chưa đúng!","bad");
+  }
+  document.getElementById("score").textContent=score;
+  document.getElementById("streak").textContent=streak;
+
+  // Tô màu đáp án đúng/sai cho câu trắc nghiệm.
+  if(q.type==="single" || q.type==="multi"){
+    const correct=getCorrectKeys(q);
+    q.options.forEach(o=>{
+      const el=document.getElementById("opt-"+o.key);
+      if(!el)return;
+      el.classList.add("locked");
+      if(o.correct)el.classList.add("correct");
+      if(selected.has(o.key) && !o.correct)el.classList.add("wrong");
+    });
+  }
+
+  setTimeout(nextQuestion,900);
+}
+
+function showFeedback(text,cls){
+  const f=document.getElementById("feedback");
+  if(f){f.textContent=text;f.className="feedback "+cls;}
+}
+function showStreak(){
+  const p=document.getElementById("streakPop");
+  p.textContent=`🔥 ${streak} câu đúng liên tiếp!`;
+  p.style.display="block";
+  setTimeout(()=>p.style.display="none",850);
+}
+
+function nextQuestion(){
+  if(current<shuffled.length-1){
+    current++; renderQuestion();
+  }else finishQuiz();
+}
+
+function finishQuiz(){
+  clearInterval(timer); soundFinish();
+  document.getElementById("quizShell").style.display="none";
+  document.getElementById("result").style.display="block";
+  document.getElementById("finalScore").textContent=score;
+  document.getElementById("correctCount").textContent=correctCount;
+  document.getElementById("wrongCount").textContent=wrongCount;
+  document.getElementById("bestStreak").textContent=bestStreak;
+  const percent=Math.round(correctCount/shuffled.length*100);
+  document.getElementById("resultText").textContent=`Bạn đúng ${correctCount}/${shuffled.length} câu (${percent}%).`;
+}
+
+function showReview(){
+  const r=document.getElementById("review");
+  r.style.display="block";
+  r.innerHTML="<h3>Đáp án</h3>";
+  shuffled.forEach((q,i)=>{
+    let ans="";
+    if(q.type==="single"||q.type==="multi") ans=q.options.filter(o=>o.correct).map(o=>o.key+". "+o.text).join("<br>");
+    else if(q.type==="fill") ans=String(q.answerText);
+    else if(q.type==="fillmulti") ans=q.answers.map((a,i)=>`(${i+1}) ${a}`).join("<br>");
+    else if(q.type==="tf") ans=q.statements.map((st,i)=>`${i+1}. ${st.answer}`).join("<br>");
+    else ans=q.pairs.map(p=>p[0]+" → "+p[1]).join("<br>");
+    r.innerHTML+=`<div class="review-item"><div class="q">Câu ${q.id}. ${esc(q.question)}</div><div class="a right"><b>Đáp án:</b> ${ans}</div></div>`;
+  });
+}
+
+function goHome(){
+  clearInterval(timer);
+  document.getElementById("setupOverlay").style.display="none";
+  document.getElementById("result").style.display="none";
+  document.getElementById("quizShell").style.display="none";
+  document.getElementById("home").style.display="block";
+  window.scrollTo(0,0);
+}
+function goHomeFromQuiz(){goHome();}
+</script>
+</body>
+</html>
